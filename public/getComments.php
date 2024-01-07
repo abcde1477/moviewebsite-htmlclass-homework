@@ -19,8 +19,21 @@ if ($conn->connect_error) {
 }
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
-    $data = ['comments' => []];
+    $data = [
+        'comments' => []
+    ];
     $data['errorMessage'] = 'NoError';
+
+    if(!(
+        isset($_POST['idType'])&&
+        isset($_POST['query_id'])&&
+        isset($_POST['sort_by'])&&
+        isset($_POST['sort_order'])&&
+        isset($_POST['from'])&&
+        isset($_POST['to'])
+    ))
+        $data['errorMessage'] = 'LackParam';
+
 
     $query_type = '';
     $idType = $_POST['idType'];
@@ -37,6 +50,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $basis = $_POST['sort_by'];
     if ($basis != 'rating' && $basis != 'releaseTime')
         $data['errorMessage'] = 'InvalidRange';
+
     $order = $_POST['sort_order'];
     if ($order != 'increase' && $order != 'decrease')
         $data['errorMessage'] = 'InvalidOrder';

@@ -1,3 +1,5 @@
 <?php
     include_once 'DBInit.php';
-    function insertMovie(){}
+    function addMovie($form_data){
+
+    }

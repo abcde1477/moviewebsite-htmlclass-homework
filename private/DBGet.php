@@ -21,14 +21,62 @@ function getSingleDataById($conn_p,$user_id_p,$dataType_p){
         return "DataBaseError";
     }
 }
+function getDataById($conn_p,$_POST){
+    $data = [
+        'userdata'=>[]
+    ];
+    $user_id=0;
+    $data['errorMessage'] = 'NoError';
+
+    if(!isset($_POST['query_id'])){
+        $data['errorMessage'] = 'LackParam';    //
+    }else if(!is_numeric($_POST['query_id'])){
+            $data['errorMessage'] = 'InvalidId';    //
+        }else{
+            $user_id = intval($_POST['query_id']);
+    }
+
+    if($data['errorMessage'] === 'NoError') {
+        $sql = "SELECT * FROM users WHERE id='$user_id'";
+        $result = $conn_p->query($sql);
+
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            $userdata['user_name'] = $row['user_name'];
+            $userdata['profile_url'] = $row['profile_url'];
+            //$userdata['password'] = $row['password'];
+            $userdata['homepage_content'] = $row['homepage_content'];
+            $userdata['isAdmin'] = $row['isAdmin'];
+            $userdata['register_time'] = $row['register_time'];
+            $data['userdata'] = $userdata;
+        } else if ($result->num_rows == 0) {
+            $data['errorMessage'] = 'NoFound';
+        } else {
+            $data['errorMessage'] = 'DataBaseError';
+        }
+    }
+    return $data;
+};
 function getMovie($conn,$_POST){
     $movieTableName = "movies";
-    $data = ['movies' => []];
+    $data = [
+        'movies' => []
+    ];
     $data['errorMessage'] = 'NoError';
+
+    //检查是否缺少参数
+    if(!(
+        isset($_POST['sort_by'])&&
+        isset($_POST['sort_order'])&&
+        isset($_POST['from'])&&
+        isset($_POST['to'])
+    ))
+        $data['errorMessage'] = 'LackParam';
 
     $basis = $_POST['sort_by'];
     if ($basis != 'rating' && $basis != 'releaseTime')
         $data['errorMessage'] = 'InvalidRange';
+
     $order = $_POST['sort_order'];
     if ($order != 'increase' && $order != 'decrease')
         $data['errorMessage'] = 'InvalidOrder';
@@ -39,6 +87,7 @@ function getMovie($conn,$_POST){
     $OFFSET = $from - 1;
     if ($LIMIT < 0 || $OFFSET < 0)
         $data['errorMessage'] = 'InvalidRange';
+    //请求参数合法性判断
 
     if($data['errorMessage'] === 'NoError'){
         $SqlSearchMovie = "SELECT * FROM $movieTableName ORDER BY $basis LIMIT $LIMIT OFFSET $OFFSET;";
@@ -46,7 +95,7 @@ function getMovie($conn,$_POST){
 
         if ($result->num_rows == 0) {
             $data['errorMessage'] = 'NoFound';
-        } else {
+        } else if($result->num_rows == 1){
             //$data['errorMessage'] = 'NoError';
             $movies = [];
             while ($row = $result->fetch_assoc()) {
@@ -71,6 +120,7 @@ function getMovie($conn,$_POST){
                 }
                 $movies['photos'] = $photos;
             }
+            $data['movies'] = $movies;
         }
     }
     return $data;
