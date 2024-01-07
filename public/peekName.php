@@ -3,7 +3,7 @@
 //检查名称是否被占用,请求一个包含name的表单，返回提示信息.前端应当在提示信息显示“用户名可用”之后，再进行对login.php发送POST表单
 //检查名称是否被占用,请求一个包含name的表单，返回提示信息.前端应当在提示信息显示“用户名可用”之后，再进行对login.php发送POST表单
 
-include_once 'private/DBInit.php';
+include_once '../private/DBInit.php';
 /** @var string $servername */
 /** @var string $username */
 /** @var string $password */

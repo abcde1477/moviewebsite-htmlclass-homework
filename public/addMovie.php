@@ -3,7 +3,7 @@
 //管理员专用页面，用于添加电影
 //管理员专用页面，用于添加电影
 
-include 'private/generateJumpPage.php';
+include '../private/generateJumpPage.php';
 
 //无会话则跳转至登录页面
 //无会话则跳转至登录页面

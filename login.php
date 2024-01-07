@@ -71,11 +71,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             else if($result->num_rows == 0){
                 echo "incorrect";
             }else{
-                echo "error";
+                echo "error-DB";
             }
         }else {
             //按理来说,username，password需要用JavaScript进行检查.对用户的提醒也应该在前端进行
-            echo "error";
+            echo "error-INPUT";
         }
     }
     header('content-Type:text/html');

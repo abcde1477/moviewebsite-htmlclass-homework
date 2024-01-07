@@ -3,8 +3,8 @@
 //获取电影信息，具体使用细则请看文档
 //获取电影信息，具体使用细则请看文档
 //获取电影信息，具体使用细则请看文档
-include_once 'private/DBInit.php';
-include_once 'private/DBGet.php';
+include_once '../private/DBInit.php';
+include_once '../private/DBGet.php';
 /** @var string $servername */
 /** @var string $username */
 /** @var string $password */

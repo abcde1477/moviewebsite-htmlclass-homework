@@ -3,7 +3,7 @@
 //给定movie_id或者user_id获取评论信息，具体使用细则请看文档
 //给定movie_id或者user_id获取评论信息，具体使用细则请看文档
 //给定movie_id或者user_id获取评论信息，具体使用细则请看文档
-include_once 'private/DBInit.php';
+include_once '../private/DBInit.php';
 /** @var string $servername */
 /** @var string $username */
 /** @var string $password */

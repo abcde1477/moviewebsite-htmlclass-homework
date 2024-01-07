@@ -8,8 +8,8 @@
 ////////////未完工///////////
 ////////////////////////////
 ////////////////////////////
-include_once 'private/DBInit.php';
-include_once 'private/DBGet.php';
+include_once '../private/DBInit.php';
+include_once '../private/DBGet.php';
 /** @var string $servername */
 /** @var string $username */
 /** @var string $password */
