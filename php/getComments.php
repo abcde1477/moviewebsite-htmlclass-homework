@@ -63,6 +63,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                     'id' => $row['id'],
                     'movie_name' => $row['movie_name'],
                     'user_id' => $row['user_id'],
+                    'comment_content'=>$row['comment'],
                     'rating' => $row['rating'],
                     'comment_time' => $row['comment_time'],
                 ];

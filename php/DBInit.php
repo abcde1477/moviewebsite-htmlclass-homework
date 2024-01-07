@@ -48,6 +48,7 @@ function init($conn,$dbName,$moviesTable,$usersTable,$commentTable){
     id INT AUTO_INCREMENT PRIMARY KEY,
     movie_id INT NOT NULL,
     user_id INT NOT NULL,
+    comment TEXT,
     rating DECIMAL(3,1) NOT NULL,
     comment_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_rating (user_id),
