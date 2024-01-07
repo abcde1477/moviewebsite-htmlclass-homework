@@ -25,7 +25,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             $message ="用户名可用";
         }
     } else {
-        $message ="字符串只能为字母数字下划线";
+        $message ="用户名只能为字母数字下划线";
     }
     header('content-Type:text/html');
     echo $message;
