@@ -44,7 +44,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($LIMIT < 0 || $OFFSET < 0)
         $data['errorMessage'] = 'InvalidRange';
 
-    if($data['errorMessage'] = 'NoError'){
+    if($data['errorMessage'] === 'NoError'){
         $SqlSearchComments = "SELECT * FROM $commentTableName WHERE $query_type = $query_id ORDER BY $basis LIMIT $LIMIT OFFSET $OFFSET;";
         $result = $conn->query($SqlSearchComments);
         if ($result->num_rows == 0) {

@@ -32,7 +32,7 @@ function getMovie($conn,$_POST){
     if ($LIMIT < 0 || $OFFSET < 0)
         $data['errorMessage'] = 'InvalidRange';
 
-    if($data['errorMessage'] = 'NoError'){
+    if($data['errorMessage'] === 'NoError'){
         $SqlSearchMovie = "SELECT * FROM $movieTableName ORDER BY $basis LIMIT $LIMIT OFFSET $OFFSET;";
         $result = $conn->query($SqlSearchMovie);
 
