@@ -1,5 +1,5 @@
 <?php
-include 'DBInit.php';
+include_once 'DBInit.php';
 
 /** @var string $servername */
 /** @var string $username */
