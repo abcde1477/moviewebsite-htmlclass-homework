@@ -13,8 +13,8 @@ $conn = new mysqli($servername, $username, $password);
 if ($conn->connect_error) {
     die("数据库连接失败,请联系管理员,错误:" . $conn->connect_error);
 }
-
-if($_SERVER["REQUEST_METHOD"] == "POST") {
+function getMovie($conn,$_POST){
+    $movieTableName = "movies";
     $data = ['movies' => []];
     $data['errorMessage'] = 'NoError';
 
@@ -65,7 +65,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
-    $json_data = json_encode($data);
-    header('content-Type:application/json');
-    echo $json_data;
+    return $data;
 }
+
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $json_data = json_encode(getMovie($conn,$_POST));
+    header('content-Type:application/json');
+    echo $json_data;}

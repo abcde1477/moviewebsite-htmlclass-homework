@@ -32,7 +32,7 @@ function init($conn,$dbName,$moviesTable,$usersTable,$commentTable){
     INDEX idx_time (releaseTime)
     )";
     $conn->query($sqlCreateMoviesTable);
-    //rating应当在每次对此电影评论后及时统计修改.
+    //rating应当在每次对此电影评论后及时维护.
 
     $sqlCreateUsersTable = "CREATE TABLE IF NOT EXISTS $commentTable (
     id INT AUTO_INCREMENT PRIMARY KEY,
