@@ -1,5 +1,9 @@
 <?php
-include_once 'DBInit.php';
+//检查名称是否被占用,请求一个包含name的表单，返回提示信息.前端应当在提示信息显示“用户名可用”之后，再进行对login.php发送POST表单
+//检查名称是否被占用,请求一个包含name的表单，返回提示信息.前端应当在提示信息显示“用户名可用”之后，再进行对login.php发送POST表单
+//检查名称是否被占用,请求一个包含name的表单，返回提示信息.前端应当在提示信息显示“用户名可用”之后，再进行对login.php发送POST表单
+
+include_once 'private/DBInit.php';
 /** @var string $servername */
 /** @var string $username */
 /** @var string $password */
@@ -9,7 +13,7 @@ include_once 'DBInit.php';
 /** @var string $userTableName */
 
 
-
+//未函数化过程.时间问题,暂不重构
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     $nameToCheck= $_POST['name'];
     $message ='';
@@ -24,6 +28,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         else{
             $message ="用户名可用";
         }
+        $conn->close();
     } else {
         $message ="用户名只能为字母数字下划线";
     }

@@ -1,6 +1,12 @@
 <?php
-include_once 'DBInit.php';
-include_once 'getUserData.php';
+//登录页面以及登录表单处理
+//登录页面以及登录表单处理
+//登录页面以及登录表单处理
+///////////////////////////////////
+///////login.html前端没有完成/////////
+///////////////////////////////////
+include_once 'private/DBInit.php';
+include 'private/generateJumpPage.php';
 /** @var string $servername */
 /** @var string $username */
 /** @var string $password */
@@ -12,24 +18,33 @@ include_once 'getUserData.php';
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+
 if($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_SESSION["user_name"]) && isset($_SESSION["user_id"])) {
-
-        echo "欢迎回来，" . $_SESSION["user_name"];
+        $UrlToJump ='';
+        //已经登录,还用GET访问此页面,是不允许的方式,将回到上一页面
         if (isset($_SESSION['last_url'])){
-            echo "稍后将返回至上一页面";
+            $UrlToJump = $_SESSION['last_url'];
         }else{
-            echo "将稍后返回主页";
+            $UrlToJump = 'index.php';
         }
+        //进入跳转页面
+        header('Content-Type: text/html');
+        echo jumpPage($UrlToJump,'','<p>您已经登录,稍后将返回至上一页面</p>');
+        exit();
     }else{
         //生成登录页面
-        echo '';
-
+        $htmlContent = file_get_contents('../html/login.html');
+        header('Content-Type: text/html');
+        echo $htmlContent;
+        exit();
     }
 }
+
+//未函数化查询过程.时间问题,暂不重构
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     $name= $_POST['username'];
-    $pw= $_POST['$password'];
+    $pw= $_POST['password'];
     $message ='';
     if (preg_match('/^[a-zA-Z0-9_]+$/', $name)) {
         if (preg_match('/^[a-zA-Z0-9_]+$/', $pw)) {
@@ -41,20 +56,27 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             $sql = "SELECT * FROM $userTableName WHERE username='$name' AND password='$pw'";
             $result = $conn->query($sql);
             if($result->num_rows == 1) {
+                //登录成功
                 $row = $result->fetch_assoc();
-                $message = "欢迎您";
                 $_SESSION['user_name'] =$row['user_name'];
                 $_SESSION['user_id'] =$row['id'];
+                $_SESSION['admin_permission'] =$row['isAdmin'];
+                //跳转url信息
+                if (isset($_SESSION['last_url'])){
+                    echo $_SESSION['last_url'];
+                }else{
+                    echo "index.php";
+                }
             }
             else if($result->num_rows == 0){
-                $message ="用户名或密码不正确";
+                echo "incorrect";
             }else{
-                $message ="数据库错误,请联系管理员";
+                echo "error";
             }
+        }else {
+            //按理来说,username，password需要用JavaScript进行检查.对用户的提醒也应该在前端进行
+            echo "error";
         }
-    } else {
-        //按理来说,username，password需要用JavaScript进行检查.对用户的提醒也应该在前端进行
-        $message ="username或password的格式不合法";
     }
     header('content-Type:text/html');
     echo $message;

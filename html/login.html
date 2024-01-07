@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #title{
+            color: blue;
+        }
+        #window{
+            margin-top: 50px;
+            align-content: center;
+            text-align: center;
+
+            width: fit-content;
+            height: fit-content;
+
+            border-style:solid;
+            border-width:1px;
+            border-color: blue;
+        }
+        #content{
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #button{
+            margin:5px;
+            width: 200px;
+
+            border-style:solid;
+
+            background-color:cornflowerblue;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div id="content">
+    <div id="window">
+        <h3 id="title">用户注册</h3>
+        <form action="login.php" method="post">
+            <table>
+                <tr><td><label for="name">用户名</label></td>
+                    <td><input id="name" type="text" name="username" placeholder="请输入您的用户名"></td>
+                </tr>
+                <tr><td><label for="password">密码</label></td>
+                    <td><input id="password" type="password" name="password" placeholder="请输入您的密码"></td>
+                </tr>
+            </table>
+            <input id="button" type="submit" value="立即登录">
+        </form>
+        <div style="text-align: right;">
+            <a>没有账号？</a>
+            <a href="register.html" style="color:red;">免费注册</a>
+        </div>
+    </div>
+    <script>
+        function check(){
+            //补全
+            //对输入项进行检测
+            //username只能为字母数字,20字以内
+            //password只能为字母数字,20字以内
+            return true || false;
+        }
+        function send(){
+            if(check()) {
+                const postData = new FormData();
+                postData.append('username', username);
+                postData.append('password', password);
+                fetch('login.php', {
+                    method: 'post',
+                    body: postData})
+                .then(response => {
+                    // 检查响应是否成功
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    // 将响应体解析为字符串
+                    return response.text();
+                })
+                .then(data => {
+                    // 在这里处理获取到的字符串数据
+                    //(data应该为'incorrect' / 一段url / 'error'的一种)
+
+                    //处理
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+
+            }
+        }
+    </script>
+</div>
+</body>
+</html>

@@ -1,6 +1,9 @@
 <?php
-include_once 'DBInit.php';
 
+//给定movie_id或者user_id获取评论信息，具体使用细则请看文档
+//给定movie_id或者user_id获取评论信息，具体使用细则请看文档
+//给定movie_id或者user_id获取评论信息，具体使用细则请看文档
+include_once 'private/DBInit.php';
 /** @var string $servername */
 /** @var string $username */
 /** @var string $password */
@@ -8,6 +11,7 @@ include_once 'DBInit.php';
 /** @var string $movieTableName */
 /** @var string $commentTableName */
 /** @var string $userTableName */
+
 
 $conn = new mysqli($servername, $username, $password);
 if ($conn->connect_error) {
@@ -74,3 +78,4 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     header('content-Type:application/json');
     echo $json_data;
 }
+$conn->close();
