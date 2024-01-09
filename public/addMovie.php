@@ -52,7 +52,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $form_data['movie_content'];
     $form_data['photo_file_url'];
     $form_data['releaseTime'];
-    $form_data['updataTime'];
     $form_data[''];
 
     //连接数据库在DBSet进行.

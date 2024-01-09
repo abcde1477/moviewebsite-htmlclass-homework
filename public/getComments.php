@@ -54,7 +54,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $order = $_POST['sort_order'];
     if ($order != 'increase' && $order != 'decrease')
         $data['errorMessage'] = 'InvalidOrder';
-
+    else{
+        if($order === 'increase') $order = 'ASC';
+        if($order === 'decrease') $order = 'DESC';
+    }
     $from = $_POST['from'];
     $to = $_POST['to'];
     $LIMIT = $to - $from + 1;
@@ -63,14 +66,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         $data['errorMessage'] = 'InvalidRange';
 
     if($data['errorMessage'] === 'NoError'){
-        $SqlSearchComments = "SELECT * FROM $commentTableName WHERE $query_type = $query_id ORDER BY $basis LIMIT $LIMIT OFFSET $OFFSET;";
+        $SqlSearchComments = "SELECT * FROM $commentTableName WHERE $query_type = $query_id ORDER BY $basis $order LIMIT $LIMIT OFFSET $OFFSET;";
         $result = $conn->query($SqlSearchComments);
         if ($result->num_rows == 0) {
-            $checkId = "SELECT * FROM $commentTableName WHERE $query_id = $query_id";
-            $result = $conn->query($SqlSearchComments);
+            $checkId = "SELECT * FROM $commentTableName WHERE $query_type = $query_id";
+            //NO LIMIT $LIMIT OFFSET $OFFSET
+            $result = $conn->query($checkId);
             if($result->num_rows == 0)
                 $data['errorMessage'] = 'NoFoundInId';
-            else
+            else//found,which means 'LIMIT $LIMIT OFFSET $OFFSET' causes NoFound
                 $data['errorMessage'] = 'NoFoundInRange';
         }
         else {
@@ -86,6 +90,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                     'comment_time' => $row['comment_time'],
                 ];
             }
+            $data['comments'] =$comments;
         }
     }
     $json_data = json_encode($data);

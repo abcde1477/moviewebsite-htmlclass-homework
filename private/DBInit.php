@@ -12,29 +12,28 @@ $conn = new mysqli($servername, $username, $password);
 if ($conn->connect_error) {
     die("连接失败: " . $conn->connect_error);
 }
-function init($conn,$dbName,$moviesTable,$usersTable,$commentTable){
+function init($conn,$dbName,$movieTable,$userTable,$commentTable){
 
     $sqlCreateDB = "CREATE DATABASE IF NOT EXISTS $dbName";
     $conn->query($sqlCreateDB);
     $conn->select_db($dbName);
 
-    $sqlCreateMoviesTable = "CREATE TABLE IF NOT EXISTS $moviesTable (
+    $sqlCreateMoviesTable = "CREATE TABLE IF NOT EXISTS $movieTable (
     id INT AUTO_INCREMENT PRIMARY KEY,
     movie_name VARCHAR(255) NOT NULL,
     attribution VARCHAR(255) NOT NULL,
     cover_url VARCHAR(255),
-    rating DECIMAL(3, 1) CHECK (rating < 10),
+    rating INT CHECK (rating < 100),
     movie_content TEXT,
     photo_file_url VARCHAR(255),
     releaseTime TIMESTAMP,
-    updataTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_rating (rating),
     INDEX idx_time (releaseTime)
     )";
     $conn->query($sqlCreateMoviesTable);
     //rating应当在每次对此电影评论后及时维护.
 
-    $sqlCreateUsersTable = "CREATE TABLE IF NOT EXISTS $commentTable (
+    $sqlCreateUsersTable = "CREATE TABLE IF NOT EXISTS $userTable (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_name VARCHAR(30) NOT NULL,
     profile_url  VARCHAR(255),
@@ -44,19 +43,20 @@ function init($conn,$dbName,$moviesTable,$usersTable,$commentTable){
     register_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
     $conn->query($sqlCreateUsersTable);
 
-    $sqlCreateCommentsTable = "CREATE TABLE IF NOT EXISTS $usersTable (
+    $sqlCreateCommentsTable = "CREATE TABLE IF NOT EXISTS $commentTable (
     id INT AUTO_INCREMENT PRIMARY KEY,
     movie_id INT NOT NULL,
     user_id INT NOT NULL,
     comment TEXT,
-    rating DECIMAL(3,1) NOT NULL,
+    rating INT NOT NULL CHECK (rating < 100),
     comment_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    INDEX idx_rating (user_id),
-    INDEX idx_time (movie_id),
-    INDEX idx_time (comment_time),
+    INDEX idx_ui (user_id),
+    INDEX idx_mi (movie_id),
+    INDEX idx_rating (rating),
+    INDEX idx_time (comment_time)
     )";
     $conn->query($sqlCreateCommentsTable);
-
 }
 
 init($conn,$dbName,$movieTableName,$commentTableName,$userTableName);
+$conn->close();

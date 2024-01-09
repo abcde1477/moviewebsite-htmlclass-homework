@@ -38,10 +38,6 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 
 
-
-
-
-
 if (isset($_SESSION['last_url'])){
     echo "注册成功,欢迎".$_SESSION['username'].",稍后将返回至上一页面";
 }else{

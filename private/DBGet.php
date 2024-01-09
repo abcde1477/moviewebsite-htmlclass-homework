@@ -1,5 +1,6 @@
 <?php
 include_once 'DBInit.php';
+
 function getSingleDataById($conn_p,$user_id_p,$dataType_p){
     if( $dataType_p !=='user_name'&&
         $dataType_p !=='profile_url'&&
@@ -57,6 +58,45 @@ function getDataById($conn_p,$_POST){
     }
     return $data;
 };
+function getCommentByTime($conn_p,$order,$from,$to){
+    $data = [
+        'comments' => []
+    ];
+    $data['errorMessage'] = 'NoError';
+
+    $from = $_POST['from'];
+    $to = $_POST['to'];
+    $LIMIT = $to - $from + 1;
+    $OFFSET = $from - 1;
+    if ($LIMIT < 0 || $OFFSET < 0)
+        $data['errorMessage'] = 'InvalidRange';
+    //范围合法性判断
+
+    if($data['errorMessage'] === 'NoError'){
+        $SqlSearchComments = "SELECT * FROM comments ORDER BY comment_time LIMIT $LIMIT OFFSET $OFFSET;";
+        $result = $conn_p->query($SqlSearchComments);
+        if ($result->num_rows == 0) {
+                $data['errorMessage'] = 'NoFoundInRange';
+        }
+        else {
+            //$data['errorMessage'] == 'NoError';
+            $comments = [];
+            while ($row = $result->fetch_assoc()) {
+                $comments[] = [
+                    'id' => $row['id'],
+                    'movie_name' => $row['movie_name'],
+                    'user_id' => $row['user_id'],
+                    'comment_content'=>$row['comment'],
+                    'rating' => $row['rating'],
+                    'comment_time' => $row['comment_time'],
+                ];
+            }
+            $data['comments'] =$comments;
+        }
+    }
+    return $data;
+}
+;
 function getMovie($conn,$_POST){
     $movieTableName = "movies";
     $data = [
@@ -80,7 +120,10 @@ function getMovie($conn,$_POST){
     $order = $_POST['sort_order'];
     if ($order != 'increase' && $order != 'decrease')
         $data['errorMessage'] = 'InvalidOrder';
-
+    else {
+        if($order === 'increase') $order = 'ASC';
+        if($order === 'decrease') $order = 'DESC';
+    }
     $from = $_POST['from'];
     $to = $_POST['to'];
     $LIMIT = $to - $from + 1;
@@ -90,12 +133,12 @@ function getMovie($conn,$_POST){
     //请求参数合法性判断
 
     if($data['errorMessage'] === 'NoError'){
-        $SqlSearchMovie = "SELECT * FROM $movieTableName ORDER BY $basis LIMIT $LIMIT OFFSET $OFFSET;";
+        $SqlSearchMovie = "SELECT * FROM $movieTableName ORDER BY $basis $order LIMIT $LIMIT OFFSET $OFFSET;";
         $result = $conn->query($SqlSearchMovie);
 
         if ($result->num_rows == 0) {
             $data['errorMessage'] = 'NoFound';
-        } else if($result->num_rows == 1){
+        }else{
             //$data['errorMessage'] = 'NoError';
             $movies = [];
             while ($row = $result->fetch_assoc()) {
