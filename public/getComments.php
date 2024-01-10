@@ -81,12 +81,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             //$data['errorMessage'] = 'NoError';
             $comments = [];
             while ($row = $result->fetch_assoc()) {
+
+                //////////$rating是字符串！
+                $decade_rating = $row['rating'];
+                $rating = number_format((float)$decade_rating/ 10.0, 1);
+                //////////$rating是字符串！
+
                 $comments[] = [
                     'id' => $row['id'],
                     'movie_name' => $row['movie_name'],
                     'user_id' => $row['user_id'],
                     'comment_content'=>$row['comment'],
-                    'rating' => $row['rating'],
+                    'rating' => $rating,
                     'comment_time' => $row['comment_time'],
                 ];
             }

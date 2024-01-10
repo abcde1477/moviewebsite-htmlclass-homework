@@ -82,12 +82,18 @@ function getCommentByTime($conn_p,$order,$from,$to){
             //$data['errorMessage'] == 'NoError';
             $comments = [];
             while ($row = $result->fetch_assoc()) {
+
+                //////////$rating是字符串！
+                $decade_rating = $row['rating'];
+                $rating = number_format((float)$decade_rating/ 10.0, 1);
+                //////////$rating是字符串！
+
                 $comments[] = [
                     'id' => $row['id'],
                     'movie_name' => $row['movie_name'],
                     'user_id' => $row['user_id'],
                     'comment_content'=>$row['comment'],
-                    'rating' => $row['rating'],
+                    'rating' => $rating,
                     'comment_time' => $row['comment_time'],
                 ];
             }
@@ -142,9 +148,13 @@ function getMovie($conn,$_POST){
             //$data['errorMessage'] = 'NoError';
             $movies = [];
             while ($row = $result->fetch_assoc()) {
+                //////////$rating是字符串！
+                $decade_rating = $row['rating'];
+                $rating = number_format((float)$decade_rating/ 10.0, 1);
+                //////////$rating是字符串！
                 $movies[] = [
                     'id' => $row['id'],
-                    'rating' => $row['rating'],
+                    'rating' => $rating,
                     'movie_name' => $row['movie_name'],
                     'attribution' => $row['movie_name'],
                     'movie_content' => $row['movie_content'],
