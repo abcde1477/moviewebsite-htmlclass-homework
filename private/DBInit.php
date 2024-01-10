@@ -7,7 +7,7 @@ $movieTableName = "movies";   //tableName
 $commentTableName = "comments";   //tableName
 $userTableName = "users";
 
-$conn = new mysqli($servername, $username, $password);
+$conn = new mysqli($servername, $username, $password,$dbName);
 // 检查连接是否成功
 if ($conn->connect_error) {
     die("连接失败: " . $conn->connect_error);
@@ -21,9 +21,9 @@ function init($conn,$dbName,$movieTable,$userTable,$commentTable){
     $sqlCreateMoviesTable = "CREATE TABLE IF NOT EXISTS $movieTable (
     id INT AUTO_INCREMENT PRIMARY KEY,
     movie_name VARCHAR(255) NOT NULL,
-    attribution VARCHAR(255) NOT NULL,
+    attribution TEXT NOT NULL,
     cover_url VARCHAR(255),
-    rating INT CHECK (rating < 100),
+    rating INT CHECK (rating < 100) DEFAULT 0,
     movie_content TEXT,
     photo_file_url VARCHAR(255),
     releaseTime TIMESTAMP,

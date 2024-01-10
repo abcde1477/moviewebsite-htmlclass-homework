@@ -27,6 +27,10 @@ if(isset($_SESSION['user_id'])){
     echo 'NotLogIn';
     exit();
 }
+
+
+$SessionIsAdmin = isset($_SESSION['admin_permission'])?$_SESSION['admin_permission']:false;
+
 if($_SERVER['REQUEST_METHOD'] == "POST"){
     $message = 'Success';
     if (!(isset($_POST['modify_user']) && isset($_POST['movie_id']))) {
@@ -42,10 +46,10 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     $movie_of_comment = $_POST['movie_id'];
 
     if(!checkPermission($self_id != $modify_user,
-        $_SESSION['admin_permission'])){
+        $SessionIsAdmin)){
             $message= 'PermissionDeny';
     }else if($message = 'Success') {
-        $conn = new mysqli($servername, $username, $password);
+        $conn = new mysqli($servername, $username, $password,$dbName);
         if ($conn->connect_error) {
             echo "数据库连接失败,请联系管理员,错误:" . $conn->connect_error;
             exit();
@@ -57,7 +61,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         if($result->num_rows == 0){
             $message = 'NoFound';
         }else {
-            if (isset($_POST['rating'])) {
+            if (isset($_POST['rating']) && $_POST['rating']!='') {
                 $rating = $_POST['rating'];
                 //rating到decade_rating
                 $decade_rating = 100;
@@ -82,7 +86,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                     reRating($conn,intval($movie_of_comment));
                 }
             }
-            if (isset($_POST['comment_content'])) {
+            if (isset($_POST['comment_content']) && $_POST['comment_content']!='') {
                 $comment_content = $_POST['comment_content'];
 
                 $stmt = $conn->prepare("UPDATE $commentTableName SET comment=? WHERE user_id=$modify_user AND movie_id = $movie_of_comment"); // 假设使用id为1的用户作为示例

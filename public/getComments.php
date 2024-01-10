@@ -13,7 +13,7 @@ include_once '../private/DBInit.php';
 /** @var string $userTableName */
 
 
-$conn = new mysqli($servername, $username, $password);
+$conn = new mysqli($servername, $username, $password,$dbName);
 if ($conn->connect_error) {
     die("数据库连接失败,请联系管理员,错误:" . $conn->connect_error);
 }

@@ -5,6 +5,40 @@
     <title>Title</title>
 </head>
 <body>
+<div>
+    <form action="../public/addMovie.php" method="post" enctype="multipart/form-data">
+        <label>电影名
+            <input type="text" name="movie_name" required/>
+        </label>
+        <br>
+        <label>电影属性
+            <input type="text" name="attribution" required/>
+        </label>
+        <br>
+      <!--      <label>电影简介
+            <input type="" name="movie_content" required>
+        </label>-->
+        <label>
+            <textarea rows="5" cols="30" name="movie_content"></textarea>
+        </label>
+        <br>
+        <label>上映时间
+            <input type="date" name="releaseTime" required/>
+        </label>
+        <br>
 
+
+        <label>电影封面
+            <input type="file"  name="cover"/>
+        </label>
+        <br>
+        <label>电影剧照
+            <input type="file" name="photos[]" multiple="multiple"/>
+        </label>
+        <br>
+        <input type="submit" value="提交"/>
+        <br>
+    </form>
+</div>
 </body>
 </html>

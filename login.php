@@ -34,7 +34,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
         exit();
     }else{
         //生成登录页面
-        $htmlContent = file_get_contents('../html/login.html');
+        $htmlContent = file_get_contents('html/login.html');
         header('Content-Type: text/html');
         echo $htmlContent;
         exit();

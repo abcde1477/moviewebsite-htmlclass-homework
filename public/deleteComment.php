@@ -27,6 +27,9 @@ if(isset($_SESSION['user_id'])){
     echo 'NotLogIn';
     exit();
 }
+$SessionIsAdmin = isset($_SESSION['admin_permission'])?$_SESSION['admin_permission']:false;
+
+
 if($_SERVER['REQUEST_METHOD'] == "POST"){
     $message = 'Success';
     if (!(isset($_POST['modify_user']) && isset($_POST['movie_id']))) {
@@ -42,10 +45,10 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     $movie_of_comment = $_POST['movie_id'];
 
     if(!checkPermission($self_id != $modify_user,
-        $_SESSION['admin_permission'])){
+        $SessionIsAdmin)){
         $message= 'PermissionDeny';
     }else if($message = 'Success') {
-        $conn = new mysqli($servername, $username, $password);
+        $conn = new mysqli($servername, $username, $password,$dbName);
         if ($conn->connect_error) {
             echo "数据库连接失败,请联系管理员,错误:" . $conn->connect_error;
             exit();

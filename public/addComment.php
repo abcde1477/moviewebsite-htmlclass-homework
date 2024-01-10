@@ -22,14 +22,15 @@ if(isset($_SESSION['user_id'])){
     exit();
 }
 
+$SessionIsAdmin = isset($_SESSION['admin_permission'])?$_SESSION['admin_permission']:false;
 
-if(!checkPermission(false,$_SESSION['admin_permission'])){
+if(!checkPermission(false,$SessionIsAdmin)){
     echo 'Exception,error in checkPermission';
     exit();
 }else {
 
 
-    $conn = new mysqli($servername, $username, $password);
+    $conn = new mysqli($servername, $username, $password,$dbName);
     if ($conn->connect_error) die("数据库连接失败,请联系管理员,错误:" . $conn->connect_error);
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -53,7 +54,6 @@ if(!checkPermission(false,$_SESSION['admin_permission'])){
                 exit();
             }
         }///
-
         //查找电影是否存在
         $checkId = "SELECT * FROM $movieTableName WHERE id = $movie_id LIMIT 1";
         $result = $conn->query($checkId);
@@ -74,10 +74,8 @@ if(!checkPermission(false,$_SESSION['admin_permission'])){
                 } else {
                     $message = 'Error';
                 }
-
                 $stmt->close();
                 //更新电影评分
-
                 reRating($conn, intval($movie_id));
             } else {
                 $message = 'Collision';

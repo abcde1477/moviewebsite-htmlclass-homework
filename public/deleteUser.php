@@ -3,7 +3,7 @@
 ////////////////////////////
 ////////////未测试///////////
 ////////////////////////////
-////////////////////////////
+////////////////////////////a
 include_once '../private/DBInit.php';
 include_once '../private/DBSet.php';
 include_once '../private/verify.php';
@@ -26,6 +26,8 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 
+$SessionIsAdmin = isset($_SESSION['admin_permission'])?$_SESSION['admin_permission']:false;
+
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $message = 'Success';
     if (!(isset($_POST['delete_user']))) {
@@ -39,10 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $delete_user = $_POST['delete_user'];
 
     if (!checkPermission($self_id != $delete_user,
-        $_SESSION['admin_permission'])) {
+        $SessionIsAdmin)) {
         $message = 'PermissionDeny';
     } else if ($message = 'Success') {
-        $conn = new mysqli($servername, $username, $password);
+        $conn = new mysqli($servername, $username, $password,$dbName);
         if ($conn->connect_error) {
             echo "数据库连接失败,请联系管理员,错误:" . $conn->connect_error;
             exit();
