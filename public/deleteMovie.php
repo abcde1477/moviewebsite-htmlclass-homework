@@ -6,6 +6,8 @@
 ////////////////////////////
 include_once '../private/DBInit.php';
 include_once '../private/verify.php';
+include_once '../private/remove.php';
+
 /** @var string $servername */
 /** @var string $username */
 /** @var string $password */
@@ -27,8 +29,6 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-$_SESSION['admin_permission'] =true;
-
 echo "会话状态:<br>";
 var_dump($_SESSION);
 
@@ -37,10 +37,8 @@ if(!checkPermission(true,$SessionIsAdmin)) {
     echo 'PermissionDeny';
     exit();
 }else{
-    echo 'Access';
-    exit();
+    echo 'Access ';
 }
-session_unset();
 
 
 
@@ -51,6 +49,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
+    echo 'POST ';
     //检查会话状态,admin_permission为false则返回
     $SessionIsAdmin = isset($_SESSION['admin_permission'])?$_SESSION['admin_permission']:false;
     if(!checkPermission(true,$SessionIsAdmin)){
@@ -63,7 +62,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             exit();
         }
         if (isset($_POST['delete_movie_id']) && $_POST['delete_movie_id']!='' && ctype_digit($_POST['delete_movie_id'])) {
-
+            echo 'formDataTypeCorrect ';
             $delete_movie_id = $_POST['delete_movie_id'];
             //事先检查存在与否
             $checkIfExist= "SELECT * FROM $movieTableName WHERE id =$delete_movie_id";
@@ -73,7 +72,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 echo 'NoFound';
                 exit();
             }else {
-
+                echo 'beginDelete ';
                 //删除文件夹
                 $Dir = "../movie_file/".$delete_movie_id;
                 deleteFilesInDirectory($Dir);

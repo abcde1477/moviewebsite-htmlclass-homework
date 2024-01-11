@@ -8,6 +8,5 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     session_unset();
     echo "会话状态:<br>";
     var_dump($_SESSION);
-
 }
 ?>

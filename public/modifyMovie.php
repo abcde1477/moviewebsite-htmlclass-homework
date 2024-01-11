@@ -50,15 +50,15 @@ $SessionIsAdmin = isset($_SESSION['admin_permission'])?$_SESSION['admin_permissi
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $message = 'Success';
-    if (!isset($_POST['$modify_movie'])) {
+    if (!isset($_POST['modify_movie'])) {
         $message = 'LackParam';//modify_movie是必备参数。
     } else {
-        if (!ctype_digit($_POST['$modify_movie'])) {
+        if (!ctype_digit($_POST['modify_movie'])) {
             $message = 'ERROR';//modify_movie的参数检查
         }
     }
     //$self_id = $_SESSION['user_id'];//不需要
-    $modify_movie = $_POST['$modify_movie'];
+    $modify_movie = $_POST['modify_movie'];
 
     if (!checkPermission(true,
         $SessionIsAdmin)) {
@@ -74,7 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         //事先查找
         $checkIfExist = "SELECT * FROM $movieTableName WHERE id = $modify_movie";
         $result = $conn->query($checkIfExist);
-
         if ($result->num_rows == 0) {
             $message = 'NoFound';
         }
@@ -113,6 +112,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
             if (isset($_FILES["cover"]) && $_FILES["cover"]["error"] == 0) {
                 // 获取文件信息
+                echo "封面修改 ";
+
                 $file_name = $_FILES["cover"]["name"];
                 $file_tmp = $_FILES["cover"]["tmp_name"];
                 $file_size = $_FILES["cover"]["size"];
@@ -125,9 +126,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     $deleteURL = "../" . $originCoverURL;
                     unlink($deleteURL);
 
-                    $newURL =  "movie_file/$modify_movie" . $file_name;
+                    $newURL =  "movie_file/$modify_movie" . "/".$file_name;
 
-                    move_uploaded_file($file_tmp,$newURL);
+                    move_uploaded_file($file_tmp,"../".$newURL);
 
 
                     $stmt = $conn->prepare("UPDATE $movieTableName SET cover_url=? WHERE id=$modify_movie");
@@ -144,16 +145,20 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     $message = "WrongPictureFormat";
                 }
             }
-            if (isset($_FILES["photos"]) &&$_FILES["photos"]["name"]["error"][0] ==0 && is_array($_FILES["filename"]["name"])) {
+            echo $_FILES["cover"]["error"]." ";
+            if (isset($_FILES["photos"]) &&$_FILES["photos"]["error"][0] ==0 && is_array($_FILES["photos"]["name"])) {
                 //清空原有剧照
-                deleteFilesInDirectory($originPhotoURL);
-                $upload_dir = $originPhotoURL; // 上传目录
-                for ($i = 0; $i < count($_FILES["filename"]["name"]); $i++) {
-                    $file_name = $_FILES["filename"]["name"][$i];
-                    $file_tmp = $_FILES["filename"]["tmp_name"][$i];
-                    $file_destination = $upload_dir . $file_name;
+                echo "剧照修改 ";
+
+                deleteFilesInDirectory("../".$originPhotoURL);
+
+                $upload_dir = "movie_file/".$modify_movie."/photos"; // 上传目录
+                for ($i = 0; $i < count($_FILES["photos"]["name"]); $i++) {
+                    $file_name = $_FILES["photos"]["name"][$i];
+                    $file_tmp = $_FILES["photos"]["tmp_name"][$i];
+                    $destination = $upload_dir ."/".$file_name;
                     // 移动上传的文件到指定目录
-                    if (move_uploaded_file($file_tmp, $file_destination)) {
+                    if (move_uploaded_file($file_tmp, "../".$destination)) {
                         $message = "Success";
                     } else {
                         $message = "ErrorInPhoto";

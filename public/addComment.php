@@ -1,6 +1,7 @@
 <?php
 include_once '../private/DBInit.php';
 include_once '../private/verify.php';
+include_once "../private/DBSet.php";
 /** @var string $servername */
 /** @var string $username */
 /** @var string $password */
@@ -9,14 +10,16 @@ include_once '../private/verify.php';
 /** @var string $commentTableName */
 /** @var string $userTableName */
 
-///////////
-header('Content-Type: text/html');
-$query_id = 0;
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
+header('Content-Type: text/html');
+$user_id = 0;
 
 
 if(isset($_SESSION['user_id'])){
-    $query_id =$_SESSION['user_id'];
+    $user_id =$_SESSION['user_id'];
 }else{
     echo 'NotLogIn';
     exit();
@@ -54,33 +57,7 @@ if(!checkPermission(false,$SessionIsAdmin)){
                 exit();
             }
         }///
-        //查找电影是否存在
-        $checkId = "SELECT * FROM $movieTableName WHERE id = $movie_id LIMIT 1";
-        $result = $conn->query($checkId);
-        if ($result->num_rows == 0)
-            $message = 'NoFound';
-
-        if ($message == 'Success') {
-            $checkCollision = "SELECT * FROM $commentTableName WHERE user_id = $query_id AND movie_id = $movie_id LIMIT 1";
-            $result = $conn->query($checkCollision);
-            if ($result->num_rows == 0) {
-                //写入评论
-                $sql = "INSERT INTO $commentTableName (movie_id, user_id, comment, rating) VALUES (?, ?, ?, ?)";
-                $stmt = $conn->prepare($sql);
-
-                $stmt->bind_param("iisi", $movie_id, $query_id, $comment, $decade_rating);
-                if ($stmt->execute()) {
-                    $message = 'Success';
-                } else {
-                    $message = 'Error';
-                }
-                $stmt->close();
-                //更新电影评分
-                reRating($conn, intval($movie_id));
-            } else {
-                $message = 'Collision';
-            }
-        }
+        $message = addComment($conn,$movie_id,$user_id,$comment,$decade_rating);
         echo $message;
     }
     $conn->close();

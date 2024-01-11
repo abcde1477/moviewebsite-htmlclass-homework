@@ -4,6 +4,7 @@
 //给定movie_id或者user_id获取评论信息，具体使用细则请看文档
 //给定movie_id或者user_id获取评论信息，具体使用细则请看文档
 include_once '../private/DBInit.php';
+
 /** @var string $servername */
 /** @var string $username */
 /** @var string $password */
@@ -58,8 +59,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         if($order === 'increase') $order = 'ASC';
         if($order === 'decrease') $order = 'DESC';
     }
-    $from = $_POST['from'];
-    $to = $_POST['to'];
+    $from =  intval($_POST['from']);
+    $to =  intval($_POST['to']);
     $LIMIT = $to - $from + 1;
     $OFFSET = $from - 1;
     if ($LIMIT < 0 || $OFFSET < 0)
@@ -89,7 +90,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $comments[] = [
                     'id' => $row['id'],
-                    'movie_name' => $row['movie_name'],
+                    'movie_id' => $row['movie_id'],
                     'user_id' => $row['user_id'],
                     'comment_content'=>$row['comment'],
                     'rating' => $rating,
@@ -99,6 +100,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             $data['comments'] =$comments;
         }
     }
+    //var_dump($data);
+
     $json_data = json_encode($data);
     header('content-Type:application/json');
     echo $json_data;

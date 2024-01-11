@@ -1,5 +1,9 @@
 <?php
-include_once 'private/DBInit.php';
+include_once '../private/DBInit.php';
+include_once '../private/verify.php';
+include_once '../private/DBSet.php';
+
+
 
 /** @var string $servername */
 /** @var string $username */

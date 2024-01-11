@@ -57,11 +57,9 @@ if(!checkPermission(false,$SessionIsAdmin)){
         //登录页面
         //$htmlContent = file_get_contents('../html/addMovie.html');
         //echo $htmlContent;
-        echo $movieTableName;
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
         //表单处理
         //['movie_name'];必填
         //['attribution'];若不填，则 暂无信息
@@ -81,6 +79,9 @@ if(!checkPermission(false,$SessionIsAdmin)){
             echo "LackName";
             exit();
         }
+        $movie_name = $_POST['movie_name'];
+
+
         $attribution = "暂无信息";
         if(isset($_POST['attribution']) && $_POST['attribution']!=""){
             $attribution = $_POST['attribution'];
@@ -97,48 +98,35 @@ if(!checkPermission(false,$SessionIsAdmin)){
             echo "LackDate";
             exit();
         }
-        $sql = "INSERT INTO $movieTableName (movie_name, attribution, movie_content, releaseTime) VALUES (?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
 
-        echo $releaseTime;
-        $stmt->bind_param("ssss", $_POST['movie_name'], $attribution, $movie_content, $releaseTime);
-        if ($stmt->execute()) {
-            //
-        } else {
-            echo 'Error';
-            exit();
-        }
-        $stmt->close();
-
+        addMovie($conn,$movie_name, $attribution, $movie_content, $releaseTime);
         $id = mysqli_insert_id($conn);
-
-        $cover_url="../movie_file/".$id;
-        mkdir($cover_url, 0777, true);
-        $photo_file_url="../movie_file/".$id."/photos";
-        mkdir($photo_file_url, 0777, true);
+        $cover_url="movie_file/".$id;
+        mkdir("../".$cover_url, 0777, true);
+        $photo_file_url="movie_file/".$id."/photos";
+        mkdir("../".$photo_file_url, 0777, true);
 
         //通过UPDATE方式写入
         if(isset($_FILES['cover']) && $_FILES['cover']['error'] == 0){
             $cover_url = $cover_url."/".$_FILES['cover']['name'];
             $file_tmp = $_FILES["cover"]["tmp_name"];
-            move_uploaded_file($file_tmp, $cover_url);
+            move_uploaded_file($file_tmp, "../".$cover_url);
         }
         else{
             $cover_url=$cover_url."/default_cover.jpg";
             //准备移动默认。
-            copy("../default/default_cover.jpg",$cover_url);
+            copy("../default/default_cover.jpg","../".$cover_url);
         }
 
         if(isset($_FILES['photos']) && $_FILES['photos']['error'][0] == 0){
             if (is_array($_FILES["photos"]["name"])) {
                 //$_FILES["filename"]["name"][0] 来检测是否上传
-
                 // 循环处理每个上传的文件
                 for ($i = 0; $i < count($_FILES["photos"]["name"]); $i++) {
                     $file_name = $_FILES["photos"]["name"][$i];
                     $file_tmp = $_FILES["photos"]["tmp_name"][$i];
                     $file_size = $_FILES["photos"]["size"][$i];
-                    $file_destination = $photo_file_url . "/".$file_name;
+                    $file_destination = "../".$photo_file_url . "/".$file_name;
 
                     // 移动上传的文件到指定目录
                     if (move_uploaded_file($file_tmp, $file_destination)) {
@@ -154,7 +142,6 @@ if(!checkPermission(false,$SessionIsAdmin)){
         }
         $sql = "UPDATE $movieTableName SET cover_url='$cover_url', photo_file_url='$photo_file_url' WHERE id=$id";
         $conn->query($sql);
-
     }
 
 }
