@@ -5,6 +5,12 @@
 ///////////////////////////////////
 ///////login.html前端没有完成/////////
 ///////////////////////////////////
+///
+///
+/// 测试正常
+///
+///
+///
 include_once 'private/DBInit.php';
 include 'private/generateJumpPage.php';
 /** @var string $servername */
@@ -18,9 +24,11 @@ include 'private/generateJumpPage.php';
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-
+echo "初始会话状态:<br>";
+var_dump($_SESSION);
 if($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_SESSION["user_name"]) && isset($_SESSION["user_id"])) {
+        echo '已经登录';
         $UrlToJump ='';
         //已经登录,还用GET访问此页面,是不允许的方式,将回到上一页面
         if (isset($_SESSION['last_url'])){
@@ -48,19 +56,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $message ='';
     if (preg_match('/^[a-zA-Z0-9_]+$/', $name)) {
         if (preg_match('/^[a-zA-Z0-9_]+$/', $pw)) {
-            $conn = new mysqli($servername, $username, $password);
+            $conn = new mysqli($servername, $username, $password,$dbName);
             if ($conn->connect_error) die("数据库连接失败,请联系管理员,错误:" . $conn->connect_error);
             $name = mysqli_real_escape_string($conn, $name);
             $pw = mysqli_real_escape_string($conn, $pw);
 
-            $sql = "SELECT * FROM $userTableName WHERE username='$name' AND password='$pw'";
+            $sql = "SELECT * FROM $userTableName WHERE user_name='$name' AND password='$pw'";
             $result = $conn->query($sql);
             if($result->num_rows == 1) {
                 //登录成功
                 $row = $result->fetch_assoc();
                 $_SESSION['user_name'] =$row['user_name'];
                 $_SESSION['user_id'] =$row['id'];
-                $_SESSION['admin_permission'] =$row['isAdmin'];
+                $_SESSION['admin_permission'] = $row['isAdmin']==='1' ||$row['isAdmin'] === true ||$row['isAdmin']==='true'||$row['isAdmin']==='TRUE';
                 //跳转url信息
                 if (isset($_SESSION['last_url'])){
                     echo $_SESSION['last_url'];
@@ -78,6 +86,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "error-INPUT";
         }
     }
+    echo "登录后会话状态:<br>";
+    var_dump($_SESSION);
     header('content-Type:text/html');
     echo $message;
 }

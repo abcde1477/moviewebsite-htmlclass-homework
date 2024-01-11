@@ -1,5 +1,6 @@
 <?php
 include_once 'private/DBInit.php';
+include_once 'private/generateJumpPage.php';
 /** @var string $servername */
 /** @var string $username */
 /** @var string $password */
@@ -13,15 +14,20 @@ include_once 'private/DBInit.php';
 //注册页面以及注册表单处理
 ///////////////////////////////////
 ///////register.html前端没有完成/////
-///////////////////////////////////
+///////前端缺少peekName///////////////////
 
 
-///////////////////////////////////
-///////register.php没有完成/////
-///////////////////////////////////
+///////////////////
+///////测试正常/////
+///////////////////
+///
+///
+///
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+echo "会话状态:<br>";
+var_dump($_SESSION);
 ///////GET///////////
 if($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_SESSION["user_name"]) && isset($_SESSION["user_id"])) {
@@ -38,8 +44,8 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
         exit();
     }else{
         //生成登录页面
-        $htmlContent = file_get_contents('../html/register.html');
         header('Content-Type: text/html');
+        $htmlContent = file_get_contents('html/register.html');
         echo $htmlContent;
         exit();
     }
@@ -58,7 +64,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $un = $_POST['username'];
     $pw = $_POST['password'];
 
-    $conn = new mysqli($servername, $username, $password);
+    $conn = new mysqli($servername, $username, $password,$dbName);
     if ($conn->connect_error)
         $message = "数据库连接失败,请联系管理员,错误:" . $conn->connect_error;
 
@@ -78,15 +84,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         if (!file_exists($relativePath)) {
             mkdir($relativePath, 0777, true); // 第一个参数是路径，第二个参数是权限，第三个参数是递归创建文件夹
         }
-        $sourcePath = "default/default_cover.jpg";
+        $sourcePath = "default/default_profile.jpg";
         $destinationPath = "user_file/$id/profile.jpg";
         copy($sourcePath, $destinationPath);
 
 
-        $query_update = "UPDATE $userTableName SET image_url = '$destinationPath' WHERE id = $id";
+        $query_update = "UPDATE $userTableName SET profile_url = '$destinationPath' WHERE id = $id";
         $result_update = mysqli_query($conn, $query_update);
 
-
+        $_SESSION['user_name'] = $un;
+        $_SESSION['user_id'] = $id;
+        $_SESSION['admin_permission'] = false;
         $conn->close();
     }
     echo $message;

@@ -4,9 +4,8 @@
 //管理员专用页面，用于添加电影
 
 ////////////////////////////////
-////////////////////////////////
-/////////未完成//////////////////
-////////////////////////////////
+/////////////////////////////////
+/////////已完成并测试//////////////
 ////////////////////////////////
 include_once '../private/DBInit.php';
 include_once '../private/verify.php';
@@ -33,6 +32,10 @@ if (session_status() == PHP_SESSION_NONE) {
     echo jumpPage('login.php','','<p>此页面必须登录后访问,将跳转到登录页面</p>');
     exit();*/
 }
+echo "会话状态:<br>";
+var_dump($_SESSION);
+
+
 /*上下两处注释的功能被checkPermission替代*/
 //验证是否为管理员
 /*if(isset($_SESSION['admin_permission']) &&($_SESSION['admin_permission'] === true||$_SESSION['admin_permission'] === 'true')){
@@ -60,10 +63,6 @@ if(!checkPermission(false,$SessionIsAdmin)){
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         //表单处理
-        ////////////////////////////////
-        ////////////////////////////////
-        /////////未完成//////////////////
-        ////////////////////////////////
         //['movie_name'];必填
         //['attribution'];若不填，则 暂无信息
         //['cover_url'];若不上传，移动默认封面至电影文件区,并设置为默认封面url

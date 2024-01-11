@@ -32,16 +32,16 @@ $SessionIsAdmin = isset($_SESSION['admin_permission'])?$_SESSION['admin_permissi
 
 if($_SERVER['REQUEST_METHOD'] == "POST"){
     $message = 'Success';
-    if (!(isset($_POST['modify_user']) && isset($_POST['movie_id']))) {
+    if (!(isset($_POST['user_id']) && isset($_POST['movie_id']))) {
         $message = 'LackParam';
     }else{
-        if(!(ctype_digit($_POST['modify_user']) && ctype_digit($_POST['movie_id']))){
+        if(!(ctype_digit($_POST['user_id']) && ctype_digit($_POST['movie_id']))){
             $message = 'ERROR';
         }
-    }//保证了modify_user，movie_id表单为数字
+    }//保证了user_id，movie_id表单为数字
 
     $self_id = $_SESSION['user_id'];
-    $modify_user =$_POST['modify_user'];
+    $modify_user =$_POST['user_id'];
     $movie_of_comment = $_POST['movie_id'];
 
     if(!checkPermission($self_id != $modify_user,
@@ -60,8 +60,10 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         if($result->num_rows == 0){
             $message = 'NoFound';
         }else {
+            //删除评论
             $Delete = "DELETE FROM $commentTableName WHERE user_id = $modify_user AND movie_id = $movie_of_comment";
             $result = $conn->query($Delete);
+            reRating($conn,intval($movie_of_comment));
         }
         $conn->close();
     }

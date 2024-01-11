@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                 //重新计算所有的电影评分
                 foreach ($ReRating_movie_id as $movie_id) {
-                    reRating($conn, $movie_id);
+                    reRating($conn, $movie_id);//$movie_id就是整数
                 }
             }
             //删除用户

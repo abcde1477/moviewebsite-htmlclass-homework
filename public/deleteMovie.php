@@ -4,9 +4,15 @@
 ////////////未完工///////////
 ////////////////////////////
 ////////////////////////////
-//
-
-//
+include_once '../private/DBInit.php';
+include_once '../private/verify.php';
+/** @var string $servername */
+/** @var string $username */
+/** @var string $password */
+/** @var string $dbName */
+/** @var string $movieTableName */
+/** @var string $commentTableName */
+/** @var string $userTableName */
 //请求
 //数字 movie_id
 //
@@ -19,28 +25,73 @@
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
-    $_SESSION['last_url']='addMovie.php';
-    header('Content-Type: text/html');
-    echo jumpPage('login.php','','<p>此页面必须登录后访问,将跳转到登录页面</p>');
-    exit();
 }
-//验证是否为管理员
-//验证是否为管理员
-if(isset($_SESSION['admin_permission']) &&($_SESSION['admin_permission'] === true||$_SESSION['admin_permission'] === 'true')){
-    //
+
+$_SESSION['admin_permission'] =true;
+
+echo "会话状态:<br>";
+var_dump($_SESSION);
+
+$SessionIsAdmin = isset($_SESSION['admin_permission'])?$_SESSION['admin_permission']:false;
+if(!checkPermission(true,$SessionIsAdmin)) {
+    echo 'PermissionDeny';
+    exit();
 }else{
-    //不允许的访问，进入跳转页面
-    header('Content-Type: text/html');
-    echo jumpPage('index.php','','<p>您不是管理员用户,不能访问该页面，将跳转到主页</p>');
+    echo 'Access';
     exit();
 }
+session_unset();
 
 
 
-//检查会话状态,admin_permission为false则返回
 if($_SERVER["REQUEST_METHOD"] == "GET"){
 
 }
-if($_SERVER["REQUEST_METHOD"] == "POST"){
 
+
+
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    //检查会话状态,admin_permission为false则返回
+    $SessionIsAdmin = isset($_SESSION['admin_permission'])?$_SESSION['admin_permission']:false;
+    if(!checkPermission(true,$SessionIsAdmin)){
+        echo 'PermissionDeny';
+        exit();
+    }else{
+        $conn = new mysqli($servername, $username, $password,$dbName);
+        if ($conn->connect_error) {
+            echo "数据库连接失败,请联系管理员,错误:" . $conn->connect_error;
+            exit();
+        }
+        if (isset($_POST['delete_movie_id']) && $_POST['delete_movie_id']!='' && ctype_digit($_POST['delete_movie_id'])) {
+
+            $delete_movie_id = $_POST['delete_movie_id'];
+            //事先检查存在与否
+            $checkIfExist= "SELECT * FROM $movieTableName WHERE id =$delete_movie_id";
+            $result = $conn->query($checkIfExist);
+
+            if($result->num_rows == 0){
+                echo 'NoFound';
+                exit();
+            }else {
+
+                //删除文件夹
+                $Dir = "../movie_file/".$delete_movie_id;
+                deleteFilesInDirectory($Dir);
+                rmdir($Dir);
+
+                //删除电影表
+                $DeleteMovie = "DELETE FROM $movieTableName WHERE id = $delete_movie_id";
+                $result = $conn->query($DeleteMovie);
+
+                //删除与之相关的评论
+                $DeleteComment = "DELETE FROM $commentTableName WHERE movie_id = $delete_movie_id";
+                $result = $conn->query($DeleteComment);
+
+            }
+        }else{
+            echo 'LackParam';
+            exit();
+        }
+        $conn->close();
+    }
 }

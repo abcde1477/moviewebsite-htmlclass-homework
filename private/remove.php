@@ -16,6 +16,7 @@ function deleteFilesInDirectory($directory) {
             // 如果是目录，递归调用删除该目录下的所有文件
             if (is_dir($filePath)) {
                 deleteFilesInDirectory($filePath);
+                rmdir($filePath);
             }
         }
     }

@@ -3,7 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        p{
+            font-size: 10px;
+
+            width: fit-content;
+            height: fit-content;
+
+        }
+        #content{
+            display:flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+        #submit{
+            width:164px;
+        }
+        .imply{
+            font-size:10px;
+            color:grey;
+        }
+        .red{
+            border-color: red;
+            color: red;
+        }
+    </style>
 </head>
+<div id="content">
+    <div id="table">
+        <form action ="register.php" method="post" onsubmit="return ScriptCheckPass();">
+            <table>
+                <tbody>
+                <tr><td><label>名称</label></td></tr>
+                <tr><td><input type="text" id="username" name="username"></td></tr>
+                <tr><td><label class="imply" id="name_imply">必填，只能是数字字母下划线</label></td></tr>
+                <tr><td><label>密码</label></td></tr>
+                <tr><td><input type="password" id="password" name="password"></td></tr>
+                <tr><td><label class="imply" id="pw_imply">请输入密码</label></td></tr>
+
+                <tr><td><label>密码确认</label></td></tr>
+                <tr><td><input type="password" id="password_confirm" name="password_confirm"></td></tr>
+                <tr><td><label class="imply" id="pw_confirm_imply">请再次输入密码</label></td></tr>
+
+                <tr><td ><input id="submit" type="submit"></td></tr>
+
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+<script>
+    function checkName(){
+        //必填，长度为4~16个字符
+        var nameToCheck = document.getElementById("username").value;
+        var NRegex = /^[0-9a-zA-Z_]+$/
+        if(!NRegex.test(nameToCheck)){
+            document.getElementById("name_imply").value = "只能是数字字母下划线";
+            document.getElementById("name_imply").classList.add("red");
+            return false;
+        }else{
+            document.getElementById("name_imply").value = "必填，只能是数字字母下划线";
+            document.getElementById("name_imply").classList.remove("red");
+            return true;
+        }
+    }
+    function checkPassword(){
+        var pw1 = document.getElementById("password").value;
+        var pw2 = document.getElementById("password_confirm").value;
+        if(pw1 == ""){
+            document.getElementById("pw_imply").innerText = "密码不能为空";
+            document.getElementById("pw_imply").classList.add("red");
+            return false;
+        }else {
+            document.getElementById("pw_imply").innerText = "请输入密码";
+            document.getElementById("pw_imply").classList.remove("red");
+        }
+        if (!(pw1 === pw2)){
+            document.getElementById("pw_confirm_imply").innerText = "两次密码不一致";
+            document.getElementById("pw_confirm_imply").classList.add("red");
+            return false;
+        }else{
+            document.getElementById("pw_confirm_imply").innerText = "再次输入相同的密码";
+            document.getElementById("pw_confirm_imply").classList.remove("red");
+
+            return true;
+        }
+    }
+    function ScriptCheckPass(){
+        var bool1 = checkName();
+        var bool2 = checkPassword();
+        if(bool1 && bool2)
+            return true;
+        else
+            return false;
+    }
+</script>
 <body>
 
 </body>

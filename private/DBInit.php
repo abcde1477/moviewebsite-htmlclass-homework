@@ -58,5 +58,5 @@ function init($conn,$dbName,$movieTable,$userTable,$commentTable){
     $conn->query($sqlCreateCommentsTable);
 }
 
-init($conn,$dbName,$movieTableName,$commentTableName,$userTableName);
+init($conn,$dbName,$movieTableName,$userTableName,$commentTableName);
 $conn->close();

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <form action="../public/addComment.php" method="post">
+            <input type="hidden" name="movieid" value="3"/><!--这个value由php生成-->
+            <label>编辑评论内容<br>
+                <textarea rows="5" cols="44" name="movie_content" required></textarea>
+            </label>
+            <br>
+            <label>评分(0.0~10.0)
+                <input type="number" step="0.1" min="0.0" max="10.0" required/>
+            </label>
+                <input type="submit"/>
+            <br>
+        </form>
+    </div>
+
+</body>
+</html>
