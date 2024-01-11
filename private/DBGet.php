@@ -22,6 +22,19 @@ function getSingleDataById($conn_p,$user_id_p,$dataType_p){
         return "DataBaseError";
     }
 }
+
+function ExistComment($conn_p,$user_id)
+{
+            $SqlSearchComments = "SELECT * FROM comments WHERE user_id = $user_id;";
+            $result = $conn_p->query($SqlSearchComments);
+            if ($result->num_rows > 0)
+                return true;
+            else {
+                return false;
+            }
+}
+
+
 function getDataById($conn_p,$_POST_P){
     $data = [
         'userdata'=>[]
@@ -30,9 +43,9 @@ function getDataById($conn_p,$_POST_P){
     $data['errorMessage'] = 'NoError';
 
     if(!isset($_POST_P['query_id'])){
-        $data['errorMessage'] = 'LackParam';    //
+        $data['errorMessage'] = 'LackParam';
     }else if(!is_numeric($_POST_P['query_id'])){
-            $data['errorMessage'] = 'InvalidId';    //
+            $data['errorMessage'] = 'InvalidId';
         }else{
             $user_id = intval($_POST_P['query_id']);
     }
@@ -102,14 +115,12 @@ function getCommentByTime($conn_p,$order,$from,$to){
     }
     return $data;
 }
-;
 function getMovie($conn,$_POST_P){
     $movieTableName = "movies";
     $data = [
         'movies' => []
     ];
     $data['errorMessage'] = 'NoError';
-
     //检查是否缺少参数
     if(!(
         isset($_POST_P['sort_by'])&&
@@ -134,9 +145,11 @@ function getMovie($conn,$_POST_P){
     $to = intval($_POST_P['to']);
     $LIMIT = $to - $from + 1;
     $OFFSET = $from - 1;
-    if ($LIMIT < 0 || $OFFSET < 0)
+    if ($LIMIT < 0)
         $data['errorMessage'] = 'InvalidRange';
     //请求参数合法性判断
+    if($OFFSET < 0)
+        $data['errorMessage'] = 'NoFound';
 
     if($data['errorMessage'] === 'NoError'){
         $SqlSearchMovie = "SELECT * FROM $movieTableName ORDER BY $basis $order LIMIT $LIMIT OFFSET $OFFSET;";
@@ -152,17 +165,7 @@ function getMovie($conn,$_POST_P){
                 $decade_rating = $row['rating'];
                 $rating = number_format((float)$decade_rating/ 10.0, 1);
                 //////////$rating是字符串！
-                $movies[] = [
-                    'id' => $row['id'],
-                    'rating' => $rating,
-                    'movie_name' => $row['movie_name'],
-                    'attribution' => $row['movie_name'],
-                    'movie_content' => $row['movie_content'],
-                    'cover_url' => $row['cover_url'],
-                    'releaseTime' => $row['releaseTime'],
-                ];
                 $photos = [];
-                //注意路径
                 $directory = $row['photo_file_url'];
                 $files = scandir('../'.$directory);   //如果无??
                 foreach ($files as $file) {
@@ -171,7 +174,16 @@ function getMovie($conn,$_POST_P){
                         $photos[] = $fileUrl;
                     }
                 }
-                $movies['photos'] = $photos;
+                $movies[] = [
+                    'id' => $row['id'],
+                    'rating' => $rating,
+                    'movie_name' => $row['movie_name'],
+                    'attribution' => $row['attribution'],
+                    'movie_content' => $row['movie_content'],
+                    'cover_url' => $row['cover_url'],
+                    'releaseTime' => $row['releaseTime'],
+                    'photos' => $photos
+                ];
             }
             $data['movies'] = $movies;
         }

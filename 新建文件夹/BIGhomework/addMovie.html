@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>电影上传页——分享那份美好</title>
+</head>
+<style>
+    body {
+        background: #bbe7e8 url("css/images/BACK3.jpg") no-repeat fixed right top;
+        background-size: 100% 100%;
+        font-family: 华文宋体, sans-serif;
+        font-size: 25px;
+        color: #fff;
+        text-align: center;
+        font-weight: bold;
+    }
+        label {
+            margin-top: 25px;
+            width: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        label>span {
+            font-size: 24px;
+            color: #fff;
+        }
+
+        label>input {
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            padding: 0 20px;
+            background-color: rgba(255, 255, 255, .6);
+            box-sizing: border-box;
+            outline: none;
+            width: 240px;
+            height: 30px;
+            font-size: 18px;
+        }
+        input{
+            width: 120px;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.6);
+            border: none;
+            border-radius: 12px;
+            letter-spacing: 5px;
+            font-size: 22px;
+            color: #ffffff;
+        }
+
+            .header {
+               width: 400px;
+               height: 700px;
+               background: rgba(0, 0, 0, .5);
+               border-radius: 16px;
+               display: flex;
+               flex-direction: column;
+               margin: 60px 0 0 1050px;
+               padding: 20px;
+    }
+
+
+</style>
+<body>
+<div class="header">
+    <form action="../public/addMovie.php" method="post" enctype="multipart/form-data">
+        <label>电影名
+            <input type="text" name="movie_name" required/>
+        </label>
+        <br>
+
+        <label>电影属性<br>
+            <textarea rows="5" cols="30" name="attribution" required></textarea>
+        </label>
+        <br>
+
+      <!--      <label>
+            <input type="" name="movie_content" required>
+        </label>-->
+        <label>电影简介<br>
+            <textarea rows="5" cols="30" name="movie_content"></textarea>
+        </label>
+        <br>
+        <label>上映时间
+            <input type="date" name="releaseTime" required/>
+        </label>
+        <br>
+
+
+        <label>电影封面
+            <input type="file"  name="cover"/>
+        </label>
+        <br>
+        <label>电影剧照
+            <input type="file" name="photos[]" multiple="multiple"/>
+        </label>
+        <br>
+        <input type="submit" value="提交"/>
+        <br>
+    </form>
+</div>
+</body>
+</html>

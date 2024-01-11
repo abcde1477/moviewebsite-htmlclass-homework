@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>电影详情页</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #sub-navigation {
+            clear: right;
+            border-bottom: 3px dashed #666;
+            border-radius: 5px;
+            background-color: rgba(255, 17, 17, 0.1);
+            padding: 10px;
+            text-align: center; /* 居中文本 */
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        form label {
+            display: inline-block;
+            margin-right: 20px; /* 减小右边距 */
+            background-color: #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        input[type="radio"]:checked + label {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        label:active {
+            background-color: #2980b9;
+        }
+
+        #sub-navigation ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #sub-navigation ul li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        #sub-navigation ul li a {
+            font-size: 20px;
+            color: black;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div id="sub-navigation">
+    <ul>
+        <form>
+            <li>
+                <label for="latestMovie">
+                    <input id="latestMovie" name="movietype" type="radio">
+                    最新电影
+                </label>
+            </li>
+            <li>
+                <label for="highestRatedMovie">
+                    <input id="highestRatedMovie" name="movietype" type="radio" checked>
+                    评分最高电影
+                </label>
+            </li>
+        </form>
+    </ul>
+</div>
+</body>
+</html>

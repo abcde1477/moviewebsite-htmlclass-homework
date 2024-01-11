@@ -57,12 +57,12 @@ function addComment($conn,$movie_id,$user_id,$comment,$decade_rating){
     return $message;
 }
 
-function register($conn,$un, $pw){//仅在根目录使用
+function register($conn,$un, $pw,$isAdmin = false){//仅在根目录使用
     $userTableName = 'users';
-
-    $sql = "INSERT INTO $userTableName (user_name, password) VALUES (?, ?)";
+    $AdminInt = ($isAdmin)?1:0;
+    $sql = "INSERT INTO $userTableName (user_name, password,isAdmin) VALUES (?, ?,?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $un, $pw);
+    $stmt->bind_param("ssi", $un, $pw,$AdminInt);
     if ($stmt->execute()) {
         $message = 'Success';
     } else {

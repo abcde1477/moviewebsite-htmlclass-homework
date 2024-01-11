@@ -2,6 +2,8 @@
 include_once '../private/DBInit.php';
 include_once '../private/verify.php';
 include_once "../private/DBSet.php";
+include_once "../private/generateJumpPage.php";
+
 /** @var string $servername */
 /** @var string $username */
 /** @var string $password */
@@ -58,7 +60,11 @@ if(!checkPermission(false,$SessionIsAdmin)){
             }
         }///
         $message = addComment($conn,$movie_id,$user_id,$comment,$decade_rating);
-        echo $message;
+        //echo $message;
+
+        header('content-Type:text/html');
+        $lastURL = isset($_SESSION['last_url'])?$_SESSION['last_url']:"index.php";
+        echo jumpPage($lastURL,"","评论成功，将在3秒后跳转至上一页面");
     }
     $conn->close();
 }

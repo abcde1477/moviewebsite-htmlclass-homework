@@ -24,8 +24,7 @@ include_once 'private/generateJumpPage.php';
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-echo "会话状态:<br>";
-var_dump($_SESSION);
+
 ///////GET///////////
 if($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_SESSION["user_name"]) && isset($_SESSION["user_id"])) {
@@ -72,6 +71,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $conn->close();
 
     echo $message;
+    echo "会话状态:<br>";
+    var_dump($_SESSION);
 }
 
 ///////POST///////////

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>用户信息</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        #userInfo {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        #choice {
+            width: 200px;
+            height: 300px;
+            border-radius: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .abc {
+            flex-grow: 1;
+            margin-left: 20px;
+        }
+
+        .username,
+        .commentTimes {
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        #profile {
+            width: 200px;
+            height: 200px; /* 设置头像宽高比例为1:1 */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .user-intro,
+        .commentHistory {
+            margin-top: 20px;
+        }
+
+        .personal-intro,
+        .comment {
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .page {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .prevButton,
+        .nextButton {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .pageNum {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>用户个人信息</h1>
+    <div id="userInfo">
+        <div id="head">
+            <img src="css/images/coming-soon1.jpg" id="profile">
+            <div class="abc">
+                <div class="username">
+                    用户名
+                </div>
+                <div class="commentTimes">
+                    已评论**次
+                </div>
+                <div class="commentTimes">
+                    <a href ="">带我去管理员控制台</a>
+                </div>
+            </div>
+        </div>
+        <div class="user-intro">
+            <h2>个人简介</h2>
+            <div class="personal-intro">
+                <!-- Add your personal intro content here -->
+            </div>
+        </div>
+        <div class="commentHistory">
+            <h2>历史评论</h2>
+            <div class="comment">
+                <!-- Add your comment history content here -->
+            </div>
+        </div>
+        <div class="page">
+            <button class="prevButton">上一页</button>
+            <div class="pageNum">第*页</div>
+            <button class="nextButton">下一页</button>
+        </div>
+    </div>
+</body>
+
+</html>

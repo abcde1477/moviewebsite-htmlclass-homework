@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录，从现在开始</title>
+    <style>
+
+        body {
+            width: 100%;
+            height: 100%;
+            background-image: url(css/images/back2.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .header {
+            width: 400px;
+            height: 380px;
+            background: rgba(0, 0, 0, .2);
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            margin: 140px 0 0 950px;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 30px;
+            color: #fff;
+        }
+
+        label {
+            margin-top: 40px;
+            width: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        label>span {
+            font-size: 24px;
+            color: #fff;
+        }
+
+        label>input {
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            padding: 0 20px;
+            background-color: rgba(255, 255, 255, .6);
+            box-sizing: border-box;
+            outline: none;
+            width: 240px;
+            height: 30px;
+            font-size: 18px;
+        }
+
+        .del {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-around;  /*实现水平居中对齐*/
+            width: 380px;
+        }
+
+
+        .pwsd {
+            display: flex;
+            margin-top: 45px;
+        }
+
+        .pwsd>input {
+            width: 24px;
+            height: 24px;
+
+        }
+
+        .pwsd>span {
+            font-size: 18px;
+            color: #fff;
+            margin-left: 20px;
+        }
+
+        button {
+            width: 110px;
+            height: 60px;
+            background: rgba(0, 0, 0, .6);
+            border: none;
+            border-radius: 12px;
+            letter-spacing: 5px;
+            font-size: 22px;
+            color: #fff;
+
+        }
+        .register{
+            text-align:center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #FFFFFF;
+        }
+        a{
+            color: #4cffff;
+        }
+        a:hover {
+            color:#e44400;
+            text-decoration:none;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>用户登录</h1>
+    <label for="username"><span>账号：</span><input type="text" id="user"></label>
+    <br>
+    <label for="password"><span>密码:</span><input type="password" id="pwd"></label>
+    <br>
+    <div class="del">
+        <button onclick="login()">登录</button>
+    </div>
+    <br>
+    <div class="register">
+        <z>还未有账号？</z>
+        <a href="register.html">点这里注册！</a>
+    </div>
+</div>
+
+<script>
+    //默认账号和密码
+    var dateUse = "12345678";
+    var dateObj = "12345678";
+    function login() {
+        //登录
+        var user = document.getElementById('user');
+        var pwd = document.getElementById('pwd');
+        if (user.value == dateUse && pwd.value == dateObj) {
+            alert('登陆成功');
+            window.location.href = "home.html";
+        } else {
+            alert('用户名或者密码错误')
+            user.value="";
+            pwd.value="";
+        }
+    }
+
+</script>
+</body>
+</html>
