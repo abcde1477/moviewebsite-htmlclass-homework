@@ -12,15 +12,11 @@ include_once 'private/generateJumpPage.php';
 
 ///////////////////////////////////
 ///////register.html前端没有完成/////
-///////前端缺少peekName///////////////////
 
 
 ///////////////////
 ///////测试正常/////
 ///////////////////
-///
-///
-///
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -28,7 +24,7 @@ if (session_status() == PHP_SESSION_NONE) {
 ///////GET///////////
 if($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_SESSION["user_name"]) && isset($_SESSION["user_id"])) {
-        $UrlToJump ='';
+      /*  $UrlToJump ='';
         //已经登录,还用GET访问此页面,是不允许的方式,将回到上一个页面
         if (isset($_SESSION['last_url'])){
             $UrlToJump = $_SESSION['last_url'];
@@ -37,7 +33,8 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
         }
         //不允许的访问，进入跳转页面
         header('Content-Type: text/html');
-        echo jumpPage($UrlToJump,'','<p>您已经登录,稍后将返回至上一个页面</p>');
+        echo jumpPage($UrlToJump,'','<p>您已经登录,稍后将返回至上一个页面</p>');*/
+        echo '您已登录';
         exit();
     }else{
         //生成登录页面

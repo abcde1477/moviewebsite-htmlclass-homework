@@ -73,9 +73,7 @@
 <div id="content">
     <div id="table">
         <form action ="register.php" method="post" onsubmit="return ScriptCheckPass();">
-            <button id="button" >按钮 </button>
             <table>
-
                 <tbody>
                 <tr><td><qsy>&nbsp注&nbsp&nbsp&nbsp册</qsy></td></tr>
                 <tr><td><label>&nbsp&nbsp&nbsp&nbsp&nbsp名称<input type="text" id="username" name="username"></label></td></tr>
@@ -92,24 +90,55 @@
     </div>
 </div>
 <script>
-    function peekName(nameToCheck){
+    function peekName(){
+        let nameToCheck = document.getElementById('username').value
         const postData =new FormData();
         postData.append('name',nameToCheck);
-        fetch('../public/peekName.php',{
+        let peekNameURL ='../public/peekName.php';
+        let name_imply_data ='必填，只能是数字字母下划线';
+
+        //使用fetchAPI进行AJAX
+        fetch(peekNameURL,{
             method:'post',
             body:postData,
         })
-            .then(response=>{return response.text()})
-            .then(htmlSting =>{
-                console.log(htmlSting);
+            .then(response=>{return response.json()})
+            .then( jsData=>{
+                console.log('fetch')
+                console.log(jsData);
+                console.log('可以发现，,json内容是一个js格式的数值或对象');
+                name_imply_data = jsData['massage'];
+                document.getElementById('name_imply').innerText=name_imply_data;
+                if(name_imply_data === '用户名可用'){
+                    document.getElementById("name_imply").classList.remove("red");
+                }else{
+                    document.getElementById("name_imply").classList.add("red");
+                };
             });
-    }
-    document.getElementById('button').addEventListener("click",()=>{
-        let name ='Name';
-        peekName(name);
-    });
 
-    function checkName(){
+        //使用XmlHttpRequestAPI进行AJAX
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', peekNameURL, true);//设置请求信息
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log('ByXHR')
+                let jsData = JSON.parse(xhr.responseText);
+                console.log(jsData);
+                console.log('可以发现，json内容是一个js格式的数值或对象');
+                name_imply_data = jsData['massage'];
+                document.getElementById('name_imply').innerText=name_imply_data;
+                if(name_imply_data === '用户名可用'){
+                    document.getElementById("name_imply").classList.remove("red");
+                }else{
+                    document.getElementById("name_imply").classList.add("red");
+                };
+            }
+        };//设置回调函数，在js收到响应后调用
+        xhr.send(postData);//设发送请求,将postData对象的信息写入请求体中
+    }
+
+
+/*    function checkName(){
         //必填，长度为4~16个字符
         var nameToCheck = document.getElementById("username").value;
         var NRegex = /^[0-9a-zA-Z_]+$/
@@ -122,10 +151,10 @@
             document.getElementById("name_imply").classList.remove("red");
             return true;
         }
-    }
+    }*/
     function checkPassword(){
-        var pw1 = document.getElementById("password").value;
-        var pw2 = document.getElementById("password_confirm").value;
+        let pw1 = document.getElementById("password").value;
+        let pw2 = document.getElementById("password_confirm").value;
         if(pw1 == ""){
             document.getElementById("pw_imply").innerText = "密码不能为空";
             document.getElementById("pw_imply").classList.add("red");
@@ -141,18 +170,15 @@
         }else{
             document.getElementById("pw_confirm_imply").innerText = "再次输入相同的密码";
             document.getElementById("pw_confirm_imply").classList.remove("red");
-
             return true;
         }
     }
-    function ScriptCheckPass(){
-        var bool1 = checkName();
-        var bool2 = checkPassword();
-        if(bool1 && bool2)
-            return true;
-        else
-            return false;
+    async function ScriptCheckPass(){
+        //var bool1 = checkName();
+        let imply = document.getElementById('name_imply').innerText;
+        return checkPassword() && imply === '用户名可用';
     }
+    document.getElementById('username').addEventListener('change',peekName);
 </script>
 <body>
 
