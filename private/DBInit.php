@@ -60,3 +60,4 @@ function init($conn,$dbName,$movieTable,$userTable,$commentTable){
 
 init($conn,$dbName,$movieTableName,$userTableName,$commentTableName);
 $conn->close();
+

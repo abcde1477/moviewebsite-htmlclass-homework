@@ -115,7 +115,7 @@
     <label for="password"><span>密码:</span><input type="password" id="pwd"></label>
     <br>
     <div class="del">
-        <button onclick="login()">登录</button>
+        <!--<button onclick="login()">登录</button>-->
     </div>
     <br>
     <div class="register">
@@ -126,10 +126,13 @@
 
 <script>
     //默认账号和密码
-    var dateUse = "12345678";
-    var dateObj = "12345678";
     function login() {
         //登录
+
+
+
+
+
         var user = document.getElementById('user');
         var pwd = document.getElementById('pwd');
         if (user.value == dateUse && pwd.value == dateObj) {
