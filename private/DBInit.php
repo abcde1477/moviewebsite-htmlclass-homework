@@ -7,7 +7,7 @@ $movieTableName = "movies";   //tableName
 $commentTableName = "comments";   //tableName
 $userTableName = "users";
 
-$conn = new mysqli($servername, $username, $password,$dbName);
+$conn = new mysqli($servername, $username, $password);
 // 检查连接是否成功
 if ($conn->connect_error) {
     die("连接失败: " . $conn->connect_error);

@@ -21,7 +21,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         $conn = new mysqli($servername, $username, $password,$dbName);
         if ($conn->connect_error) die("数据库连接失败,请联系管理员,错误:" . $conn->connect_error);
 
-        $SqlSearchComments = "SELECT * FROM $userTableName WHERE user_name = $nameToCheck;";
+        $SqlSearchComments = "SELECT * FROM $userTableName WHERE user_name = '$nameToCheck';";
         $result = $conn->query($SqlSearchComments);
         if($result->num_rows >0)
             $message ="用户名已存在";

@@ -73,7 +73,7 @@
 <div id="content">
     <div id="table">
         <form action ="register.php" method="post" onsubmit="return ScriptCheckPass();">
-
+            <button id="button" >按钮 </button>
             <table>
 
                 <tbody>
@@ -92,6 +92,23 @@
     </div>
 </div>
 <script>
+    function peekName(nameToCheck){
+        const postData =new FormData();
+        postData.append('name',nameToCheck);
+        fetch('../public/peekName.php',{
+            method:'post',
+            body:postData,
+        })
+            .then(response=>{return response.text()})
+            .then(htmlSting =>{
+                console.log(htmlSting);
+            });
+    }
+    document.getElementById('button').addEventListener("click",()=>{
+        let name ='Name';
+        peekName(name);
+    });
+
     function checkName(){
         //必填，长度为4~16个字符
         var nameToCheck = document.getElementById("username").value;
