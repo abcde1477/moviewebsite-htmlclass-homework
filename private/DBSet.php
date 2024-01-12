@@ -93,7 +93,7 @@ function register($conn,$un, $pw,$isAdmin = false){//仅在根目录使用
     $result_update = mysqli_query($conn, $query_update);
     $_SESSION['user_name'] = $un;
     $_SESSION['user_id'] = $id;
-    $_SESSION['admin_permission'] = false;
+    $_SESSION['admin_permission'] = $isAdmin;
 }
 function reRating($conn_p,$movie_id){
     $commentTableName = "comments";

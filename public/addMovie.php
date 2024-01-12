@@ -48,7 +48,7 @@ var_dump($_SESSION);
 
 $SessionIsAdmin = isset($_SESSION['admin_permission'])?$_SESSION['admin_permission']:false;
 
-if(!checkPermission(false,$SessionIsAdmin)){
+if(!checkPermission(true,$SessionIsAdmin)){
     echo 'PermissionDeny';
     exit();
 }else {

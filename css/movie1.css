@@ -12,22 +12,11 @@ body {
     flex-direction: column;
 
 }
-
-img{
-    height: 220px;
-    width: 220px;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-h1{
-    color: white;
-}
 html h1 {
     font-size: 26px;
 }
 .article {
-    border: 3px solid #000000;
-    border-radius: 10px;
+    border: 10px solid #ff7afd;
     padding-right: 25px;
     width: 675px;
     background-color: rgba(187, 231, 232, 0.7);
@@ -84,10 +73,28 @@ html h1 {
     margin: 2px 0 0 0;
     padding: 0 0 0 15px;
     border-left: 1px solid #eaeaea;
-    color: #000000;
-    font-size: 18px;
+    color: #9b9b9b;
+}
+.rating_wrap {
+    padding-bottom: 15px;
+    font-size: 12px;
+    line-height: 14px;
+}
+.clearbox {
+    clear: both;
+    width: 100%;
 }
 
+.rating_self {
+    padding: 0;
+    line-height: 2;
+}
+.rating_num {
+    color: #494949;
+    padding: 0;
+    min-width: 30%;
+    font-size: 28px;
+}
 .ll {
     float: left;
 }
@@ -180,7 +187,10 @@ a img {
     margin-bottom: 10px;
 }
 .star {
+    display: flex;
     align-items: center;
+    font-size: 16px;
+
 }
 
 .rating5-t::before {
@@ -195,5 +205,4 @@ a img {
 .rating_num {
     margin-left: 5px;
     color: #ff0000;
-    font-size: 30px;
 }
