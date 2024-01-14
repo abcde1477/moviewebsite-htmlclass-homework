@@ -35,7 +35,7 @@ function ExistComment($conn_p,$user_id)
 }
 
 
-function getDataById($conn_p,$_POST_P){
+function getDataById_POST($conn_p,$_POST_P){
     $data = [
         'userdata'=>[]
     ];
@@ -48,6 +48,42 @@ function getDataById($conn_p,$_POST_P){
             $data['errorMessage'] = 'InvalidId';
         }else{
             $user_id = intval($_POST_P['query_id']);
+    }
+
+    if($data['errorMessage'] === 'NoError') {
+        $sql = "SELECT * FROM users WHERE id='$user_id'";
+        $result = $conn_p->query($sql);
+
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            $userdata['user_name'] = $row['user_name'];
+            $userdata['profile_url'] = $row['profile_url'];
+            //$userdata['password'] = $row['password'];
+            $userdata['homepage_content'] = $row['homepage_content'];
+            $userdata['isAdmin'] = $row['isAdmin'];
+            $userdata['register_time'] = $row['register_time'];
+            $data['userdata'] = $userdata;
+        } else if ($result->num_rows == 0) {
+            $data['errorMessage'] = 'NoFound';
+        } else {
+            $data['errorMessage'] = 'DataBaseError';
+        }
+    }
+    return $data;
+};
+function getDataById_GET($conn_p,$GET_P){
+    $data = [
+        'userdata'=>[]
+    ];
+    $user_id=0;
+    $data['errorMessage'] = 'NoError';
+
+    if(!isset($GET_P['query_id'])){
+        $data['errorMessage'] = 'LackParam';
+    }else if(!is_numeric($GET_P['query_id'])){
+        $data['errorMessage'] = 'InvalidId';
+    }else{
+        $user_id = intval($GET_P['query_id']);
     }
 
     if($data['errorMessage'] === 'NoError') {

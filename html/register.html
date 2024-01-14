@@ -126,6 +126,7 @@
                 console.log(jsData);
                 console.log('可以发现，json内容是一个js格式的数组或对象');
                 name_imply_data = jsData['massage'];
+
                 document.getElementById('name_imply').innerText=name_imply_data;
                 if(name_imply_data === '用户名可用'){
                     document.getElementById("name_imply").classList.remove("red");

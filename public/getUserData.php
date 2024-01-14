@@ -17,8 +17,19 @@ $conn = new mysqli($servername, $username, $password,$dbName);
 if ($conn->connect_error) die("数据库连接失败,请联系管理员,错误:" . $conn->connect_error);
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
-    $json_data = json_encode(getDataById($conn,$_POST));
+    $json_data = json_encode(getDataById_POST($conn,$_POST));
     header('content-Type:application/json');
     echo $json_data;
 }
+
+if($_SERVER["REQUEST_METHOD"] == "GET") {
+    $Array = getDataById_GET($conn,$_GET);
+    //数据在$Array中
+
+    $json_data = json_encode($Array);
+    header('content-Type:application/json');
+    echo $json_data;
+}
+
+
 $conn->close();
