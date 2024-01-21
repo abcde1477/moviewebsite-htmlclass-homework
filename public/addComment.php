@@ -59,10 +59,10 @@ if(!checkPermission(false,$SessionIsAdmin)){
                 exit();
             }
         }///
-        $message = addComment($conn,$movie_id,$user_id,$comment,$decade_rating);
-        //echo $message;
-
         header('content-Type:text/html');
+        $message = addComment($conn,$movie_id,$user_id,$comment,$decade_rating);
+        echo $message;
+        exit();
         $lastURL = isset($_SESSION['last_url'])?$_SESSION['last_url']:"index.php";
         echo jumpPage($lastURL,"","评论成功，将在3秒后跳转至上一页面");
     }

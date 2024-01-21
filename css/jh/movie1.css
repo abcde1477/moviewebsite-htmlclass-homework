@@ -12,65 +12,15 @@ body {
     flex-direction: column;
 
 }
-.navbar {
-    text-align: center;
-    background-color: rgb(187, 231, 232, .6);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 999;
-}
-
-.navbar ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    height: 28px;
-    font-size: 23px;
-    font-family: 宋体;
-}
-
-.navbar li {
-    background-color: rgb(255, 255, 255,0.6);
-    border:50px;
-    border-radius: 30px;
-    display: inline;
-    margin: 20px 70px;
-
-
-}
-
-.navbar a {
-    text-decoration: none;
-    color: #000000;
-    font-weight: bold;
-    font-size: 20px;
-}
-.indent_clearfix img{
-    height: 300px;
-    width: 200px;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-h1{
-    width:735px;
-    border: 0.5px black solid ;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.9);
-    color: Black;
-}
 html h1 {
     font-size: 26px;
 }
 .article {
-    border: 3px solid #000000;
-    border-radius: 10px;
+    border: 10px solid #ff7afd;
     padding-right: 25px;
-    width: 705px;
-    background-color: rgba(255, 255, 255, 0.85);
+    width: 675px;
+    background-color: rgba(187, 231, 232, 0.7);
     flex: 1;
-    padding-bottom: 40px;
 }
 .year {
     zoom: 1;
@@ -96,12 +46,15 @@ html h1 {
     margin-bottom: 15px;
 }
 .subject {
+    width: 500px;
     float: left;
 }
 #mainpic {
+    width: 143px;
     float: left;
     text-align: center;
     margin: 3px 12px 0 0;
+    max-width: 155px;
     overflow: hidden;
 }
 #info {
@@ -117,14 +70,31 @@ html h1 {
 #interest_sectl {
     float: left;
     width: 155px;
-    height:300px;
     margin: 2px 0 0 0;
     padding: 0 0 0 15px;
-    border-left: 2px solid #000000;
-    color: #000000;
-    font-size: 18px;
+    border-left: 1px solid #eaeaea;
+    color: #9b9b9b;
+}
+.rating_wrap {
+    padding-bottom: 15px;
+    font-size: 12px;
+    line-height: 14px;
+}
+.clearbox {
+    clear: both;
+    width: 100%;
 }
 
+.rating_self {
+    padding: 0;
+    line-height: 2;
+}
+.rating_num {
+    color: #494949;
+    padding: 0;
+    min-width: 30%;
+    font-size: 28px;
+}
 .ll {
     float: left;
 }
@@ -154,14 +124,11 @@ a {
     cursor: pointer;
 }
 i {
-    background: rgba(199, 199, 199, 0.8);
-    border-radius: 10px;
-    font-size: 30px;
     font-style: normal;
     font-weight: normal;
 }
 h2 {
-    color: #3277c7;
+    color: #007722;
     font: 15px Arial, Helvetica, sans-serif;
     line-height: 150%;
 }
@@ -174,7 +141,7 @@ h2 {
 .related-pic-bd {
     font-size:0;
     text-align:justify;
-    text-justify:distribute;
+    text-justify:distribute
 }
 ul {
     list-style: none;
@@ -185,11 +152,9 @@ ul {
     position: relative;
 }
 
-
-
-.photos {
-    height: 200px;
-    width: 550px;
+.related-pic-bd img {
+    height: 115px;
+    width: 115px;
 }
 a img {
     border-width: 0;
@@ -200,49 +165,32 @@ a img {
     height: 115px;
     vertical-align: top;
 }
-.ex{
-    float: left;
-}
-.sortOptions {
+.comment {
+    position: relative;
 
+    display: flex;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+#sortOptions {
     text-align: right;
     margin-bottom: 20px;
 }
-.comment {
-    position: relative;
-    max-height: 130px;
-    display: flex;
-    border: 3px solid #ccc;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    font-size: 15px;
-    line-height: 0.7;
-}
-.sortOptions label{
-
-    font-size: 25px;
-}
-button{
-    width:70px;
-    display: inline-block;
-    background-color: #87b2e3;
-    padding: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-
-}
-
 #comments {
     margin-top: 20px;
 }
-.comment img{
-    height: 80px;
-    width: 80px;
-    border-radius: 50px;
+.comment {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
 }
 .star {
+    display: flex;
     align-items: center;
+    font-size: 16px;
+
 }
 
 .rating5-t::before {
@@ -257,5 +205,4 @@ button{
 .rating_num {
     margin-left: 5px;
     color: #ff0000;
-    font-size: 30px;
 }

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link  rel="stylesheet" href="css/movie1.css" type="text/css"/>
+</head>
+<body>
+<style>
+    body
+    {
+    background-size: cover;
+    background: url('css/images/back11.jpg') no-repeat fixed top;
+    background-size: 100% 100%;
+}
+</style>
+<div class="nav">
+    <nav class="navbar">
+        <ul>
+            <li><a href="home.html">主页</a></li>
+            <li><a href="#about">管理页面</a></li>
+            <li><a href="user.html">个人中心</a></li>
+            <li><a href="#contact">管理用户</a></li>
+        </ul>
+    </nav>
+</div>
+<br>
+<h1>
+    <span id="moive">在这里填入电影名这里是电影详情页电影名填入处！</span>
+</h1>
+
+<div class="article">
+    <div class="indent_clearfix">
+        <div class="subjectwrap clearfix">
+            <div class="subject clearfix">
+            <div id="mainpic" class="">
+                <img src="在这里填入电影封面url这里是电影详情页电影封面url填入处" alt="在这里填入电影名这里是电影详情页电影名填入处！" id="picture">
+            </div>
+            <div id="info">
+                <span><span class="pl">导演</span>:<span class="attrs" id="director">在这里填入导演这里是电影详情页导演填入处</span></span>
+                <br>
+                <span class="actor"><span class="pl">主演</span>: <span class="attrs" id="actors">在这里填入主演这里是电影详情页主演填入处</span></span>
+                <br>
+                <span class="pl">上映日期:</span><span id="date">在这里填入上映时间这里是电影详情页上映时间填入处</span>
+                <br>
+            </div>
+        </div>
+
+
+            <div id="interest_sectl">
+        <div class="rating_wrap clearbox" rel="v:rating">
+        <div class="clearfix">
+            <div class="rating_logo ll">
+                评分
+            </div>
+            <div class="star">
+                <span class="rating5-t" style="--rating: calc(9.7 / 10 * 100%)"></span><br>
+                <span class="rating_num" property="v:average" id="rating">9.7分</span><br>
+                <span property="v:best" content="10.0"></span>
+
+                <span id="numbers">2968582人评价</span>
+            </div>
+        </div>
+        </div>
+            </div>
+            </div>
+    </div>
+    <br>
+    <div class="intro" style="margin-bottom:-10px;">
+        <h2>
+            <br>
+            <i class="" >剧情简介</i>
+        </h2>
+
+        <div class="indent" id="link-report-intra">
+
+                        <span property="v:summary" class="" id="introduction"><!--在这里填入简介-->
+                           在这里填入简介这里是电影详情页简介模板
+                        </span>
+            <div class="clear"></div>
+
+
+        </div>
+    </div>
+    <div id="related-pic" class="related-pic">
+        <h2>
+            <Br>
+            <i class="">剧照</i>
+
+        </h2>
+
+        剧照填入
+    </div>
+    <div class="ex">
+    <h2>
+        <i class="">评论区</i>
+
+    </h2>
+    </div>
+    <div class="sortOptions">
+
+        <label>排序方式</label>
+        <div id="sortBy">
+            <button value="comment_time">最新</button>
+            <button value="rating">最高</button>
+        </div>
+    </div>
+    <div id="comments">
+        <!-- 这里是评论内容 -->
+    </div>
+    <div id="commentForm">
+        <form action="../public/addComment.php" method="post">
+            <input type="hidden" id="movie_id" name="movie_id" value="-1"/><!--这个value由php生成-->
+            <input type="hidden" id="user_id" name="user_id" value="-1"/><!--这个value由php生成-->
+            <label>编辑评论内容<br>
+                <textarea rows="5" cols="44" name="comment_content" required></textarea>
+            </label>
+            <br>
+            <label>评分(0.0~10.0)
+                <input type="number" name="rating" step="0.1" min="0.0" max="10.0" required/>
+            </label>
+            <button type="submit" id="CommentSubmit">提交评论</button>
+            <br>
+        </form>
+    </div>
+    <script>
+        let movie_id = document.getElementById('movie_id').value;
+
+        let comments =[];
+        async function getCommentData(sortBy){
+            const postData =new FormData();
+            postData.append('idType','movie');
+            postData.append('query_id',movie_id);
+            postData.append('sort_by',sortBy);
+            postData.append('sort_order','decrease');
+            postData.append('from',1);
+            postData.append('to',30);
+            await fetch("public/getComments.php",{
+                method:'post',
+                body:postData
+            })
+                .then(data=>data.json())
+                .then(jsData =>{
+                    comments =jsData['comments'];
+                })
+                .catch();
+
+            let PromiseList = [];
+            //评论添加头像以及用户名格式转换
+            comments.forEach(comment=>{
+                if(comment.id !== undefined) {
+                    const userDataQuery = new FormData();
+                    userDataQuery.append('query_id', comment.user_id)
+                    PromiseList.push(
+                        fetch("public/getUserData.php", {
+                            method: 'post',
+                            body: userDataQuery
+                        })
+                            .then(data => data.json())
+                            .then(jsData => {
+                                comment['user_name'] = jsData['userdata']['user_name'];
+                                comment['profile'] = jsData['userdata']['profile_url'];
+                                console.log(comment);
+                                return 'done';
+                            })
+                    );
+                }
+            })
+            await Promise.all(PromiseList);
+            updateCommentsDisplay();
+        }
+
+        const sortBySelect = document.getElementById('sortBy');
+        sortBySelect.addEventListener('click',function (event) {
+            // 选择排序方式（'releaseTime' 或 'rating'）
+            console.log(event.target.value);
+            getCommentData(event.target.value);
+        });
+
+        const commentForm = document.getElementById('commentForm');
+        commentForm.addEventListener('submit',(event)=>{
+            event.preventDefault(); // 阻止默认的表单提交行为
+            const formData = new FormData(event.target);
+            const user_id = parseInt(document.getElementById('user_id').value);
+            // 发起fetch请求
+            if(user_id !== -1) {
+                fetch('/public/addComment.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        console.log(data);
+                        if (data === 'Collision') {
+                            alert('您曾经评价过电影,不能多次评价');
+                        } else if (data === 'Success') {
+                            alert('评价成功');
+                            location.reload();
+                        }
+                    });
+            }else{
+                alert('您未登录，请先登录');
+            }
+        })
+
+        function updateCommentsDisplay() {
+            // 清空评论容器
+            const commentsContainer = document.getElementById('comments');
+            commentsContainer.innerHTML = '';
+            // 根据选择的排序方式进行排序
+            // 在页面上展示评论
+            comments.forEach(comment => {
+                const commentElement = document.createElement('div');
+                commentElement.classList.add('comment');
+                const userAvatar = document.createElement('img');
+                userAvatar.src = comment.profile;
+                userAvatar.alt = '用户头像';
+                userAvatar.classList.add('avatar');
+                commentElement.appendChild(userAvatar);
+
+                const a = document.createElement('a');
+                a.href = 'user.php?query_id='+comment.user_id;
+                const commentDetails = document.createElement('div');
+                commentDetails.classList.add('comment-details');
+                const username = document.createElement('p');
+                username.innerText = `用户名: ${comment.user_name}`;
+                a.appendChild(username);
+                commentDetails.appendChild(a);
+
+
+                const commentText = document.createElement('p');
+                commentText.innerText = comment.comment_content;
+                commentDetails.appendChild(commentText);
+                const timestamp = document.createElement('p');
+                const commentTime = new Date(comment.comment_time);
+                timestamp.innerText = `发表时间: ${commentTime.toLocaleString()}`;
+                commentDetails.appendChild(timestamp);
+                const rating = document.createElement('p');
+                rating.innerText = `评分: ${comment.rating}`;
+                commentDetails.appendChild(rating);
+                commentElement.appendChild(commentDetails);
+                commentsContainer.appendChild(commentElement);
+            });
+        }
+        // 初始化评论显示
+        getCommentData('comment_time')
+        updateCommentsDisplay();
+    </script>
+</div>
+</body>
+</html>

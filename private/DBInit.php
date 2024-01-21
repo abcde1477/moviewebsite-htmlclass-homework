@@ -24,6 +24,7 @@ function init($conn,$dbName,$movieTable,$userTable,$commentTable){
     attribution TEXT NOT NULL,
     cover_url VARCHAR(255),
     rating INT CHECK (rating <= 100) DEFAULT 0,
+    comment_number INT DEFAULT 0,
     movie_content TEXT,
     photo_file_url VARCHAR(255),
     releaseTime TIMESTAMP,

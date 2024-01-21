@@ -48,7 +48,7 @@ body {
     font-size: 20px;
 }
 .indent_clearfix img{
-    height: 300px;
+    height: 200px;
     width: 200px;
     background-size: cover;
     background-repeat: no-repeat;
@@ -104,7 +104,7 @@ html h1 {
     margin: 3px 12px 0 0;
     overflow: hidden;
 }
-#info {
+#Userinfo {
     max-width: 333px;
     float: left;
     word-wrap: break-word;
@@ -114,16 +114,7 @@ html h1 {
     line-height: 150%;
     color: #666666;
 }
-#interest_sectl {
-    float: left;
-    width: 155px;
-    height:300px;
-    margin: 2px 0 0 0;
-    padding: 0 0 0 15px;
-    border-left: 2px solid #000000;
-    color: #000000;
-    font-size: 18px;
-}
+
 
 .ll {
     float: left;
@@ -185,11 +176,9 @@ ul {
     position: relative;
 }
 
-
-
-.photos {
-    height: 200px;
-    width: 550px;
+.related-pic-bd img {
+    height: 115px;
+    width: 115px;
 }
 a img {
     border-width: 0;

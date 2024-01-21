@@ -1,30 +1,40 @@
 <!DOCTYPE html >
-<html lang="zh-CN" >
+<html lang="zh-CN">
 <head>
     <title>电影网站</title>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
     <script type="text/javascript" src="js/javascript1.js"></script>
+    <script type="text/javascript" src="js/connect.js"></script>
+    <script src="js/search-input.js"></script>
+    <script src="js/moviescript.js"></script>
 </head>
 
 <body>
 <style>
     body{
         background-size: cover;
-        background: url('css/images/back6.jpg') no-repeat fixed  top;
+        background: url('css/images/back11.jpg') no-repeat fixed  top;
         background-size: 100% 100%;
     }
 </style>
 <div id="shell">
     <div id="header">
-        <div class="top">
+        <div class="nav">
+        <nav class="navbar">
+            <ul>
+                <li><a href="home.html">主页</a></li>
+                <li><a href="#about">管理页面</a></li>
+                <li><a href="user.html">个人中心</a></li>
+                <li><a href="#contact">管理用户</a></li>
+            </ul>
+        </nav>
+        </div>
         <h1 id="logo"><a href="home.html"><img src="css/images/logo.jpg" alt="电影网站LOGO"></a></h1>
-
         <div id="loginInfo">
             <div class="user-info" id="login">想看更多内容,
-                <a href="html/login.html" class="111">请登录</a>
-                <a href=html/login.html id="loginLink">请登录</a>
-
+                <a href="login.php"class="111">请登录</a>
+                <a href=Register.php>请注册</a>
             </div>
         </div>
         <script src="js/login.js"></script>
@@ -36,9 +46,8 @@
                 <input type="submit" value="" class="search-button" />
             </form>
         </div>
-            <script src="js/search-input.js"></script>
         <br>
-        </div><br>
+     <br>
         <div class="bottom">
             <div class="slideshow-container">
                 <div class="slides">
@@ -66,13 +75,13 @@
                     <form>
                         <li>
                             <label for="latestMovie">
-                                <input id="latestMovie" name="movietype" type="radio">
+                                <input  id="latestMovie" name="movieType" type="radio">
                                 最新电影
                             </label>
                         </li>
                         <li>
                             <label for="highestRatedMovie">
-                                <input id="highestRatedMovie" name="movietype" type="radio">
+                                <input  id="highestRatedMovie" name="movieType" type="radio">
                                 评分最高电影
                             </label>
                         </li>
@@ -80,281 +89,86 @@
                 </ul>
             </div>
 
-                <ol class="grid_view">
-        <li>
-            <div class="item" id="Movie1"><!---->
-                <div class="pic">
-                    <em class=""></em>
-                    <a href="https://movie.douban.com/subject/1292052/" class="image-container">
-                        <img width="100" alt="肖申克的救赎" src="css/images/movie1.jpg" class="CoverImg"><!---->
-                    </a>
-                </div>
-                <div class="info">
-                    <div class="hd">
-                        <a href="https://movie.douban.com/subject/1292052/" class="DetailURL"><!---->
-                            <span class="title">肖申克的救赎</span>
-                        </a>
+        <ol class="grid_view" id="movieList">
 
-                    </div>
-                    <div class="bd">
-                        <p class="Attribution"><!---->
-                            导演: 弗兰克·德拉邦特 Frank Darabont&nbsp;&nbsp;&nbsp;主演: 蒂姆·罗宾斯 Tim Robbins /...<br>
-                            1994&nbsp;/&nbsp;美国&nbsp;/&nbsp;犯罪 剧情
-                        </p>
-
-
-                        <div class="star">
-                            <span class="rating5-t" style="--rating: calc(9.7 / 10 * 100%)"></span>
-                            <span class="rating_num" property="v:average">9.7分</span>
-                            <span property="v:best" content="10.0"></span>
-                            <span class="RatingPeople">2968582人评价</span><!---->
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </li><br>
-        <li>
-            <div class="item" id="Movie2">
-                <div class="pic">
-                    <em class=""></em>
-                    <a href="https://movie.douban.com/subject/1291546/" class="image-container">
-                        <img width="100" alt="霸王别姬" src="css/images/movie2.jpg" class="CoverImg">
-                    </a>
-                </div>
-                <div class="info">
-                    <div class="hd">
-                        <a href="https://movie.douban.com/subject/1291546/" class="DetailURL">
-                            <span class="title">霸王别姬</span>
-                        </a>
-
-                    </div>
-                    <div class="bd">
-                        <p class="Attribution">
-                            导演: 陈凯歌 Kaige Chen&nbsp;&nbsp;&nbsp;主演: 张国荣 Leslie Cheung / 张丰毅 Fengyi Zha...<br>
-                            1993&nbsp;/&nbsp;中国大陆 中国香港&nbsp;/&nbsp;剧情 爱情 同性
-                        </p>
-
-                        <div class="star">
-                            <span class="rating5-t" style="--rating: calc(1 / 10 * 100%)"></span>
-                            <span class="rating_num" property="v:average">1.0分</span>
-                            <span property="v:best" content="10.0"></span>
-                            <span class="RatingPeople">2193555人评价</span>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </li><br>
-        <li>
-            <div class="item" id="Movie3">
-                <div class="pic">
-                    <em class=""></em>
-                    <a href="https://movie.douban.com/subject/1292720/" class="image-container">
-                        <img width="100" alt="阿甘正传" src="css/images/movie3.jpg" class="CoverImg">
-                    </a>
-                </div>
-                <div class="info">
-                    <div class="hd">
-                        <a href="https://movie.douban.com/subject/1292720/" class="DetailURL">
-                            <span class="title">阿甘正传</span>
-                        </a>
-
-                    </div>
-                    <div class="bd">
-                        <p class="Attribution">
-                            导演: 罗伯特·泽米吉斯 Robert Zemeckis&nbsp;&nbsp;&nbsp;主演: 汤姆·汉克斯 Tom Hanks / ...<br>
-                            1994&nbsp;/&nbsp;美国&nbsp;/&nbsp;剧情 爱情
-                        </p>
-
-                        <div class="star">
-                            <span class="rating5-t" style="--rating: calc(9.1 / 10 * 100%)"></span>
-
-                            <span class="rating_num" property="v:average">9.1分</span>
-                            <span property="v:best" content="10.0"></span>
-                            <span class="RatingPeople">2212367人评价</span>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </li><br>
-        <li>
-            <div class="item" id="Movie4">
-                <div class="pic">
-                    <em class=""></em>
-                    <a href="https://movie.douban.com/subject/1292722/" class="image-container">
-                        <img width="100" alt="泰坦尼克号" src="css/images/movie4.jpg" class="CoverImg">
-                    </a>
-                </div>
-                <div class="info">
-                    <div class="hd">
-                        <a href="https://movie.douban.com/subject/1292722/" class="DetailURL">
-                            <span class="title">泰坦尼克号</span>
-                        </a>
-
-                    </div>
-                    <div class="bd">
-                        <p class="Attribution">
-                            导演: 詹姆斯·卡梅隆 James Cameron&nbsp;&nbsp;&nbsp;主演: 莱昂纳多·迪卡普里奥 Leonardo...<br>
-                            1997&nbsp;/&nbsp;美国 墨西哥&nbsp;/&nbsp;剧情 爱情 灾难
-                        </p>
-
-                        <div class="star">
-                            <span class="rating5-t" style="--rating: calc(9.5/ 10 * 100%)"></span>
-                            <span class="rating_num" property="v:average">9.5分</span>
-                            <span property="v:best" content="10.0"></span>
-                            <span class="RatingPeople">2248560人评价</span>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </li><br>
-        <li>
-            <div class="item" id="Movie5">
-                <div class="pic">
-                    <em class=""></em>
-                    <a href="https://movie.douban.com/subject/1295644/" class="image-container">
-                        <img width="100" alt="这个杀手不太冷" src="css/images/movie5.jpg" class="CoverImg">
-                    </a>
-                </div>
-                <div class="info">
-                    <div class="hd">
-                        <a href="https://movie.douban.com/subject/1295644/" class="DetailURL">
-                            <span class="title">这个杀手不太冷</span>
-                        </a>
-
-                    </div>
-                    <div class="bd">
-                        <p class="Attribution">
-                            导演: 吕克·贝松 Luc Besson&nbsp;&nbsp;&nbsp;主演: 让·雷诺 Jean Reno / 娜塔莉·波特曼 ...<br>
-                            1994&nbsp;/&nbsp;法国 美国&nbsp;/&nbsp;剧情 动作 犯罪
-                        </p>
-
-
-                        <div class="star">
-                            <span class="rating5-t" style="--rating: calc(4.4/ 10 * 100%)"></span>
-                            <span class="rating_num" property="v:average">4.4分</span>
-                            <span property="v:best" content="10.0"></span>
-                            <span class="RatingPeople">2343923人评价</span>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </li><br>
-        <li>
-            <div class="item" id="Movie6">
-                <div class="pic">
-                    <em class=""></em>
-                    <a href="https://movie.douban.com/subject/1291561/" class="image-container">
-                        <img width="100" alt="千与千寻" src="css/images/movie6.jpg" class="CoverImg">
-                    </a>
-                </div>
-                <div class="info">
-                    <div class="hd">
-                        <a href="https://movie.douban.com/subject/1291561/" class="DetailURL">
-                            <span class="title">千与千寻</span>
-                        </a>
-
-                    </div>
-                    <div class="bd">
-                        <p class="Attribution">
-                            导演: 宫崎骏 Hayao Miyazaki&nbsp;&nbsp;&nbsp;主演: 柊瑠美 Rumi Hîragi / 入野自由 Miy...<br>
-                            2001&nbsp;/&nbsp;日本&nbsp;/&nbsp;剧情 动画 奇幻
-                        </p>
-
-                        <div class="star">
-                            <span class="rating5-t" style="--rating: calc(9.4 / 10 * 100%)"></span>
-                            <span class="rating_num" property="v:average">9.4分</span>
-                            <span property="v:best" content="10.0"></span>
-                            <span class="RatingPeople">2295790人评价</span>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </li><br>
-        <li>
-            <div class="item" id="Movie7">
-                <div class="pic">
-                    <em class=""></em>
-                    <a href="https://movie.douban.com/subject/1292063/" class="image-container">
-                        <img width="100" alt="美丽人生" src="css/images/movie16.jpg" class="CoverImg">
-                    </a>
-                </div>
-                <div class="info">
-                    <div class="hd">
-                        <a href="https://movie.douban.com/subject/1292063/" class="DetailURL">
-                            <span class="title">美丽人生</span>
-                        </a>
-
-                    </div>
-                    <div class="bd">
-                        <p class="Attribution">
-                            导演: 罗伯托·贝尼尼 Roberto Benigni&nbsp;&nbsp;&nbsp;主演: 罗伯托·贝尼尼 Roberto Beni...<br>
-                            1997&nbsp;/&nbsp;意大利&nbsp;/&nbsp;剧情 喜剧 爱情 战争
-                        </p>
-
-
-                        <div class="star">
-                            <span class="rating5-t" style="--rating: calc(9.5 / 10 * 100%)"></span>
-                            <span class="rating_num" property="v:average">9.5分</span>
-                            <span property="v:best" content="10.0"></span>
-                            <span class="RatingPeople">1355951人评价</span>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </li><br>
-        <li>
-            <div class="item" id="Movie8">
-                <div class="pic">
-                    <em class=""></em>
-                    <a href="https://movie.douban.com/subject/1889243/" class="image-container">
-                        <img width="100" alt="星际穿越" src="css/images/movie1.jpg" class="CoverImg">
-                    </a>
-                </div>
-                <div class="info">
-                    <div class="hd">
-                        <a href="https://movie.douban.com/subject/1889243/" class="DetailURL">
-                            <span class="title">星际穿越</span>
-                        </a>
-
-
-                        <span class="playable">[可播放]</span>
-                    </div>
-                    <div class="bd">
-                        <p class="Attribution">
-                            导演: 克里斯托弗·诺兰 Christopher Nolan&nbsp;&nbsp;&nbsp;主演: 马修·麦康纳 Matthew Mc...<br>
-                            2014&nbsp;/&nbsp;美国 英国 加拿大&nbsp;/&nbsp;剧情 科幻 冒险
-                        </p>
-
-                        <div class="star">
-                            <span class="rating5-t" style="--rating: calc(7.8/ 10 * 100%)"></span>
-                            <span class="rating_num" property="v:average">7.8分</span>
-                            <span property="v:best" content="10.0"></span>
-                            <span class="RatingPeople">1905227人评价</span>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </li><br>
-    </ol>
+        </ol>
     </div>
     </div>
+    <button id="scrollToTopBtn">返回顶部</button>
+    <script src="js/button.js"></script>
     <!-- Footer -->
-    <div id="footer">
-        <p>
-            <a href="#" id="Last">上一页</a> <span> </span>
-            <a id ="PageNum">|第n页|</a>
-            <a href="#" id="Next">下一页</a> <span> </span>
-        </p>
-    </div>
+
     <br><br>
 </div>
+<script>
+
+
+
+
+    async function getMovie(sortBy){
+        const getAllMovie = new FormData();
+        getAllMovie.append('sort_by',sortBy);
+        getAllMovie.append('sort_order','decrease');
+        getAllMovie.append('from',1);
+        getAllMovie.append('to',998);
+        await fetch('public/getMovie.php',{
+            method:'POST',
+            body:getAllMovie
+        }).then(data =>data.json())
+            .then(jsData =>{
+                if(jsData['errorMessage']==='NoError'){
+                    let movies = jsData['movies'];
+                    var movieList = document.getElementById("movieList");
+                    movieList.innerHTML='';
+                    for (const movie of movies) {
+                        var detailURL = "movieDetail.php?query_id="+movie['id'];
+                        var movieName = movie['movie_name'];
+                        var coverURL = movie['cover_url'];
+                        var attribution = movie['attribution'];
+                        attribution+='<br>'+movie['releaseTime'].split(' ')[0];
+                        var rating = movie['rating']
+                        var commentNumber = movie['comment_number'];
+                        var movieItem = document.createElement('div');
+                        movieItem.className = "item";
+                        movieItem.innerHTML  = `<div class="pic">
+                    <em class=""></em>
+                    <a href="${detailURL}" class="image-container">
+                        <img width="100" alt="${movieName}" src="${coverURL}" class="CoverImg">
+                    </a>
+                </div>
+                <div class="info">
+                    <div class="hd">
+                        <a href="${detailURL}" class="DetailURL">
+                            <span class="title">${movieName}</span>
+                        </a>
+                    </div>
+                    <div class="bd">
+                        <p class="Attribution">
+                            ${attribution}
+                        </p>
+                        <div class="star">
+                            <span class="rating5-t" style="--rating: calc(${rating}/ 10 * 100%)"></span>
+                            <span class="rating_num" property="v:average">${rating}分</span>
+                            <span property="v:best" content="10.0"></span>
+                            <span class="RatingPeople">${commentNumber}人评价</span>
+                        </div>
+                    </div>
+                </div>`;
+                        var movieItemLi = document.createElement('li');
+                        movieItemLi.append(movieItem)
+                        movieList.appendChild(movieItemLi);
+                    }
+                }
+                else{
+
+                }
+            });
+    }
+    document.getElementById('latestMovie').addEventListener('click',()=>{getMovie('releaseTime')});
+    document.getElementById('highestRatedMovie').addEventListener('click',()=>{getMovie('rating')});
+    getMovie('rating');
+
+</script>
 </body>
+
 </html>

@@ -113,11 +113,11 @@
                     document.getElementById("name_imply").classList.remove("red");
                 }else{
                     document.getElementById("name_imply").classList.add("red");
-                };
+                }
             });
 
         //使用XmlHttpRequestAPI进行AJAX
-        let xhr = new XMLHttpRequest();
+/*        let xhr = new XMLHttpRequest();
         xhr.open('POST', peekNameURL, true);//设置请求信息
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
@@ -135,7 +135,7 @@
                 }
             }
         };//设置回调函数，在js收到响应后调用
-        xhr.send(postData);//设发送请求,将postData对象的信息写入请求体中
+        xhr.send(postData);//设发送请求,将postData对象的信息写入请求体中*/
     }
 
 
@@ -156,14 +156,16 @@
     function checkPassword(){
         let pw1 = document.getElementById("password").value;
         let pw2 = document.getElementById("password_confirm").value;
-        if(pw1 == ""){
+        if(pw1 === ""){
             document.getElementById("pw_imply").innerText = "密码不能为空";
             document.getElementById("pw_imply").classList.add("red");
             return false;
         }else {
             document.getElementById("pw_imply").innerText = "请输入密码";
             document.getElementById("pw_imply").classList.remove("red");
+
         }
+
         if (!(pw1 === pw2)){
             document.getElementById("pw_confirm_imply").innerText = "两次密码不一致";
             document.getElementById("pw_confirm_imply").classList.add("red");
@@ -174,10 +176,21 @@
             return true;
         }
     }
-    async function ScriptCheckPass(){
+    function ScriptCheckPass(){
         //var bool1 = checkName();
         let imply = document.getElementById('name_imply').innerText;
-        return checkPassword() && imply === '用户名可用';
+        console.log(imply === '用户名已存在');
+        console.log(!checkPassword());
+
+        if(imply === '用户名已存在'){
+            alert('您不能使用被占用的用户名');
+            return false;
+        }else if(!checkPassword()){
+            alert('密码检查不通过');
+            return false;
+        }else{
+            return true;
+        }
     }
     document.getElementById('username').addEventListener('change',peekName);
 </script>

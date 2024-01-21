@@ -107,14 +107,12 @@ function getDataById_GET($conn_p,$GET_P){
     }
     return $data;
 };
-function getCommentByTime($conn_p,$order,$from,$to){
+function getCommentByTime($conn_p,$from,$to){
     $data = [
         'comments' => []
     ];
     $data['errorMessage'] = 'NoError';
 
-    $from = $_POST['from'];
-    $to = $_POST['to'];
     $LIMIT = $to - $from + 1;
     $OFFSET = $from - 1;
     if ($LIMIT < 0 || $OFFSET < 0)
@@ -139,7 +137,7 @@ function getCommentByTime($conn_p,$order,$from,$to){
 
                 $comments[] = [
                     'id' => $row['id'],
-                    'movie_name' => $row['movie_name'],
+                    'movie_id' => $row['movie_id'],
                     'user_id' => $row['user_id'],
                     'comment_content'=>$row['comment'],
                     'rating' => $rating,
@@ -151,7 +149,69 @@ function getCommentByTime($conn_p,$order,$from,$to){
     }
     return $data;
 }
-function getMovie($conn,$_POST_P){
+function getComment($conn,$idType,$query_id,$sort_by,$sort_order,$from,$to): array
+{
+    $data = [
+        'comments' => []
+    ];
+    $data['errorMessage'] = 'NoError';
+
+    $basis = $sort_by;
+    if ($basis != 'rating' && $basis != 'comment_time')
+        $data['errorMessage'] = 'InvalidRange';
+
+    $order = $sort_order;
+    if ($order != 'increase' && $order != 'decrease')
+        $data['errorMessage'] = 'InvalidOrder';
+    else{
+        if($order === 'increase') $order = 'ASC';
+        if($order === 'decrease') $order = 'DESC';
+    }
+
+    $LIMIT = $to - $from + 1;
+    $OFFSET = $from - 1;
+    if ($LIMIT < 0 || $OFFSET < 0)
+        $data['errorMessage'] = 'InvalidRange';
+
+    if($data['errorMessage'] === 'NoError'){
+        $SqlSearchComments = "SELECT * FROM comments WHERE $idType = $query_id ORDER BY $basis $order LIMIT $LIMIT OFFSET $OFFSET;";
+        $result = $conn->query($SqlSearchComments);
+        if ($result->num_rows == 0) {
+            $checkId = "SELECT * FROM comments WHERE $idType = $query_id";
+            //NO LIMIT $LIMIT OFFSET $OFFSET
+            $result = $conn->query($checkId);
+            if($result->num_rows == 0)
+                $data['errorMessage'] = 'NoFoundInId';
+            else//found,which means 'LIMIT $LIMIT OFFSET $OFFSET' causes NoFound
+                $data['errorMessage'] = 'NoFoundInRange';
+        }
+        else {
+            //$data['errorMessage'] = 'NoError';
+            $comments = [];
+            while ($row = $result->fetch_assoc()) {
+
+                //////////$rating是字符串！
+                $decade_rating = $row['rating'];
+                $rating = number_format((float)$decade_rating/ 10.0, 1);
+                //////////$rating是字符串！
+
+                $comments[] = [
+                    'id' => $row['id'],
+                    'movie_id' => $row['movie_id'],
+                    'user_id' => $row['user_id'],
+                    'comment_content'=>$row['comment'],
+                    'rating' => $rating,
+                    'comment_time' => $row['comment_time'],
+                ];
+            }
+            $data['comments'] =$comments;
+        }
+    }
+    //var_dump($data);
+    return $data;
+}
+function getMovie($conn,$_POST_P): array
+{
     $movieTableName = "movies";
     $data = [
         'movies' => []
@@ -218,6 +278,7 @@ function getMovie($conn,$_POST_P){
                     'movie_content' => $row['movie_content'],
                     'cover_url' => $row['cover_url'],
                     'releaseTime' => $row['releaseTime'],
+                    'comment_number'=>$row['comment_number'],
                     'photos' => $photos
                 ];
             }
@@ -225,7 +286,30 @@ function getMovie($conn,$_POST_P){
         }
     }
     return $data;
-}/*
+}
+function getMovieById($conn,$query_id){
+    $movieTableName = "movies";
+    $SqlSearchMovie = "SELECT * FROM $movieTableName WHERE id = $query_id;";
+    $row = $conn->query($SqlSearchMovie)->fetch_assoc();
+    $photos = [];
+    $directory = $row['photo_file_url'];
+
+    $files = scandir($directory);   //如果无??
+    foreach ($files as $file) {
+        if ($file != "." && $file != "..") {
+            $fileUrl = $directory . '/' . $file;
+            $photos []= $fileUrl;
+        }
+
+    }
+    $row['photos']=$photos;
+
+    return $row;
+};
+
+
+
+/*
 function searchMovie($conn,$_POST_P){
     $movieTableName = "movies";
     $data = [

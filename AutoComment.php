@@ -51,10 +51,11 @@ function autoComment($conn,$UserFrom,$UserTo,$MovieFrom,$MovieTo){
     $counter =0;
     $userNumber = $UserTo -$UserFrom+1;
     $movieNumber = $MovieTo -$MovieFrom+1;
-    for ($i = 0; $i < $userNumber; $i++) {
-        for ($j = 0; $j < $movieNumber; $j++) {
+    for ($i = $UserFrom; $i <= $userNumber; $i++) {
+        for ($j = $MovieFrom; $j <= $movieNumber; $j++) {
             addComment($conn,$j,$i,$commentArray[$counter],rand(0, 100));
             $counter++;
+            sleep(1);
             if($counter > count($commentArray)-4) $counter=0;
             echo $commentArray[$counter]."<br>";
         }
@@ -66,5 +67,5 @@ if ($conn->connect_error) {
     die("数据库连接失败,请联系管理员,错误:" . $conn->connect_error);
 }
 
-autoComment($conn,3,12,1,12);
+autoComment($conn,1,6,1,12);
 $conn->close();

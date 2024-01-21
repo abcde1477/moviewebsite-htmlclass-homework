@@ -110,7 +110,7 @@
 <body>
 <div class="header">
     <h1>用户登录</h1>
-    <form action="login.php" method="post">
+    <!--<form action="login.php" method="post">-->
     <label for="user"><span>账号：</span><input type="text" id="user" name="username"></label>
     <br>
     <label for="pwd"><span>密码:</span><input type="password" id="pwd" name="password"></label>
@@ -118,7 +118,7 @@
     <div class="del">
         <button type="submit" id="loginButton" >登录</button>
     </div>
-    </form>
+    <!--</form>-->
     <br>
     <div class="register">
         <z>还未有账号？</z>
@@ -127,7 +127,7 @@
 </div>
 
 <script>
-   /* let button = document.querySelector('#loginButton');
+    let button = document.querySelector('#loginButton');
     button.addEventListener('click',()=>{
         const postData =new FormData();
 
@@ -138,9 +138,12 @@
             method:'post',
             body:postData
         })
-            .then();
+            .then(response =>{
+                response.text();
+            }).then(
 
-    });*/
+        );
+    });
 </script>
 </body>
 </html>

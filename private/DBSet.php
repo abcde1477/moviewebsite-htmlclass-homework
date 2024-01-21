@@ -113,4 +113,6 @@ function reRating($conn_p,$movie_id){
 
     $sql = "UPDATE $movieTableName SET rating = $average WHERE id = $movie_id";
     $conn_p->query($sql);
+    $sql = "UPDATE $movieTableName SET comment_number = comment_number + 1 WHERE id = $movie_id";
+    $conn_p->query($sql);
 }

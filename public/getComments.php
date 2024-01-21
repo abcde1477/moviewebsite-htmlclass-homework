@@ -1,9 +1,7 @@
 <?php
 
-//给定movie_id或者user_id获取评论信息，具体使用细则请看文档
-//给定movie_id或者user_id获取评论信息，具体使用细则请看文档
-//给定movie_id或者user_id获取评论信息，具体使用细则请看文档
 include_once '../private/DBInit.php';
+include_once '../private/DBGet.php';
 
 /** @var string $servername */
 /** @var string $username */
@@ -20,6 +18,8 @@ if ($conn->connect_error) {
 }
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
+
+
     $data = [
         'comments' => []
     ];
@@ -34,76 +34,35 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         isset($_POST['to'])
     ))
         $data['errorMessage'] = 'LackParam';
-
-
-    $query_type = '';
-    $idType = $_POST['idType'];
-    if ($idType =='movie'){
-        $query_type = "movie_id";
-    }else if($idType =='user')
-    {
-        $query_type = "user_id";
-    }else{
-        $data['errorMessage'] = 'InvalidIdType';
-    }
-
-    $query_id = $_POST['query_id'];
-    $basis = $_POST['sort_by'];
-    if ($basis != 'rating' && $basis != 'releaseTime')
-        $data['errorMessage'] = 'InvalidRange';
-
-    $order = $_POST['sort_order'];
-    if ($order != 'increase' && $order != 'decrease')
-        $data['errorMessage'] = 'InvalidOrder';
-    else{
-        if($order === 'increase') $order = 'ASC';
-        if($order === 'decrease') $order = 'DESC';
-    }
-    $from =  intval($_POST['from']);
-    $to =  intval($_POST['to']);
-    $LIMIT = $to - $from + 1;
-    $OFFSET = $from - 1;
-    if ($LIMIT < 0 || $OFFSET < 0)
-        $data['errorMessage'] = 'InvalidRange';
-
-    if($data['errorMessage'] === 'NoError'){
-        $SqlSearchComments = "SELECT * FROM $commentTableName WHERE $query_type = $query_id ORDER BY $basis $order LIMIT $LIMIT OFFSET $OFFSET;";
-        $result = $conn->query($SqlSearchComments);
-        if ($result->num_rows == 0) {
-            $checkId = "SELECT * FROM $commentTableName WHERE $query_type = $query_id";
-            //NO LIMIT $LIMIT OFFSET $OFFSET
-            $result = $conn->query($checkId);
-            if($result->num_rows == 0)
-                $data['errorMessage'] = 'NoFoundInId';
-            else//found,which means 'LIMIT $LIMIT OFFSET $OFFSET' causes NoFound
-                $data['errorMessage'] = 'NoFoundInRange';
+    if($data['errorMessage'] == 'NoError'){
+        $idType = $_POST['idType'];
+        if ($idType =='movie'){
+            $idType = "movie_id";
+        }else if($idType =='user')
+        {
+            $idType = "user_id";
+        }else{
+            $data['errorMessage'] = 'InvalidIdType';
         }
-        else {
-            //$data['errorMessage'] = 'NoError';
-            $comments = [];
-            while ($row = $result->fetch_assoc()) {
 
-                //////////$rating是字符串！
-                $decade_rating = $row['rating'];
-                $rating = number_format((float)$decade_rating/ 10.0, 1);
-                //////////$rating是字符串！
-
-                $comments[] = [
-                    'id' => $row['id'],
-                    'movie_id' => $row['movie_id'],
-                    'user_id' => $row['user_id'],
-                    'comment_content'=>$row['comment'],
-                    'rating' => $rating,
-                    'comment_time' => $row['comment_time'],
-                ];
-            }
-            $data['comments'] =$comments;
-        }
+        $query_id = $_POST['query_id'];
+        $sort_by = $_POST['sort_by'];
+        $sort_order =  $_POST['sort_order'];
+        $from =  intval($_POST['from']);
+        $to =  intval($_POST['to']);
     }
-    //var_dump($data);
-
+    if($data['errorMessage'] == 'NoError')
+        $data = getComment($conn,$idType,$query_id,$sort_by,$sort_order,$from,$to);
     $json_data = json_encode($data);
     header('content-Type:application/json');
     echo $json_data;
 }
+if($_SERVER["REQUEST_METHOD"] == "GET") {
+    $data = getCommentByTime($conn,1,3);
+    $json_data = json_encode($data['comments']);
+    header('content-Type:application/json');
+    echo $json_data;
+}
+
+
 $conn->close();
