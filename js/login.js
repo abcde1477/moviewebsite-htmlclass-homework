@@ -10,9 +10,7 @@ const loginLink = document.getElementById("loginLink");
 // 点击登录链接事件
 loginLink.addEventListener("click", function (event) {
     event.preventDefault(); // 阻止默认行为（这里是防止链接跳转）
-
     // 假设这里有登录逻辑，比如弹出登录框、输入用户名密码等，然后完成登录...
-
     // 模拟登录成功后更新界面
     const loginInfo = document.getElementById("loginInfo");
     const userInfo = document.createElement("div");

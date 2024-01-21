@@ -89,3 +89,4 @@ if(!checkPermission($self_id != $modify_user,
     $conn->close();
 }
 echo $message;
+echo '<br><a href="../home.php" >回到主页</a>';

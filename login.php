@@ -67,10 +67,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $_SESSION['user_id']=$row['id'];
         $_SESSION['user_name']=$row['user_name'];
         $_SESSION['admin_permission']=$row['isAdmin']==1;
-
+        echo 'Success';
+    }else{
+        echo 'NoFound';
     }
-    $conn->close();
+    $conn->close();/*
     echo $message;
     echo "会话状态:<br>";
-    var_dump($_SESSION);
+    var_dump($_SESSION);*/
 }

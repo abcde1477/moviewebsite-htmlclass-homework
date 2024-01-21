@@ -11,8 +11,8 @@ include_once 'private/DBGet.php';
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-echo "会话状态:<br>";
-var_dump($_SESSION);
+/*echo "会话状态:<br>";
+var_dump($_SESSION);*/
 function getStringBetween($str, $begin, $end) {
     $start = strpos($str, $begin);
     if ($start === false) {
@@ -56,10 +56,18 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
 
 
 
-
         $htmlContent = str_replace('在这里填入电影封面url这里是电影详情页电影封面url填入处',$result['cover_url'],$htmlContent);
         $htmlContent = str_replace('在这里填入电影名这里是电影详情页电影名填入处',$result['movie_name'],$htmlContent);
 
+        if(isset($_SESSION['user_id']) && isset($_SESSION['user_name'])) {
+            $userdata = getDataById($conn, $_SESSION['user_id']);
+            $userURL = 'user.php?query_id=' . $_SESSION['user_id'];
+
+            $htmlContent = str_replace('替换为会话者id', $_SESSION['user_id'], $htmlContent);
+        }else{
+            $htmlContent = str_replace('替换为会话者id', -1, $htmlContent);
+
+        }
 
 
 

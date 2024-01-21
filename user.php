@@ -13,9 +13,9 @@ include_once 'private/verify.php';
 /** @var string $userTableName */
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
-}
+}/*
 echo "会话状态:<br>";
-var_dump($_SESSION);
+var_dump($_SESSION);*/
 function getStringBetween($str, $begin, $end)
 {
     $start = strpos($str, $begin);
@@ -54,15 +54,26 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $htmlContent = str_replace('这里替换为头像url', $result['profile_url'], $htmlContent);
         $htmlContent = str_replace('这里替换为用户名', $result['user_name'], $htmlContent);
         $htmlContent = str_replace('这里替换为用户id', $query_id, $htmlContent);
-        $htmlContent = str_replace('在这里替换为注册时间', $result['register_time'], $htmlContent);
+
+        if(isset($_SESSION['user_id']) && isset($_SESSION['user_name'])) {
+            $userdata = getDataById($conn, $_SESSION['user_id']);
+            $userURL = 'user.php?query_id=' . $_SESSION['user_id'];
+            $htmlContent = str_replace('替换为会话者id', $_SESSION['user_id'], $htmlContent);
+        }else{
+            $htmlContent = str_replace('替换为会话者id', -1, $htmlContent);
+
+        }
+
+
+            $htmlContent = str_replace('在这里替换为注册时间', $result['register_time'], $htmlContent);
         $htmlContent = str_replace('这里替换为个人简介', $result['homepage_content'], $htmlContent);
 
-        $deletable = checkPermission(!(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $query_id),
+        $modifiable = checkPermission(!(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $query_id),
             isset($_SESSION['admin_permission'])&& $_SESSION['admin_permission']
         );
-        $deletable = $deletable?'true':'false';
+        $modifiable = $modifiable?'true':'false';
 
-        $htmlContent = str_replace('删除按钮显示与否',$deletable, $htmlContent);
+        $htmlContent = str_replace('删除按钮显示与否',$modifiable, $htmlContent);
 
 
         if(!(isset($_SESSION['user_id']) && ($_SESSION['user_id'] ==$query_id || $_SESSION['admin_permission']))){
@@ -72,6 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         echo $htmlContent;
         exit();
     }else{
-        echo "缺少参数";
+        echo "登录后方可访问此页面<br>";
+        echo '<a href="login.php">去登录</a>';
     }
 }

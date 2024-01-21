@@ -35,41 +35,23 @@ function ExistComment($conn_p,$user_id)
 }
 
 
-function getDataById_POST($conn_p,$_POST_P){
-    $data = [
-        'userdata'=>[]
-    ];
-    $user_id=0;
-    $data['errorMessage'] = 'NoError';
+function getDataById($conn_p,$query_id){
 
-    if(!isset($_POST_P['query_id'])){
-        $data['errorMessage'] = 'LackParam';
-    }else if(!is_numeric($_POST_P['query_id'])){
-            $data['errorMessage'] = 'InvalidId';
-        }else{
-            $user_id = intval($_POST_P['query_id']);
+
+    $userdata=[];
+    $sql = "SELECT * FROM users WHERE id='$query_id'";
+    $result = $conn_p->query($sql);
+
+    if ($result->num_rows == 1) {
+        $row = $result->fetch_assoc();
+        $userdata['user_name'] = $row['user_name'];
+        $userdata['profile_url'] = $row['profile_url'];
+        //$userdata['password'] = $row['password'];
+        $userdata['homepage_content'] = $row['homepage_content'];
+        $userdata['isAdmin'] = $row['isAdmin'];
+        $userdata['register_time'] = $row['register_time'];
     }
-
-    if($data['errorMessage'] === 'NoError') {
-        $sql = "SELECT * FROM users WHERE id='$user_id'";
-        $result = $conn_p->query($sql);
-
-        if ($result->num_rows == 1) {
-            $row = $result->fetch_assoc();
-            $userdata['user_name'] = $row['user_name'];
-            $userdata['profile_url'] = $row['profile_url'];
-            //$userdata['password'] = $row['password'];
-            $userdata['homepage_content'] = $row['homepage_content'];
-            $userdata['isAdmin'] = $row['isAdmin'];
-            $userdata['register_time'] = $row['register_time'];
-            $data['userdata'] = $userdata;
-        } else if ($result->num_rows == 0) {
-            $data['errorMessage'] = 'NoFound';
-        } else {
-            $data['errorMessage'] = 'DataBaseError';
-        }
-    }
-    return $data;
+    return $userdata;
 };
 function getDataById_GET($conn_p,$GET_P){
     $data = [
@@ -210,83 +192,55 @@ function getComment($conn,$idType,$query_id,$sort_by,$sort_order,$from,$to): arr
     //var_dump($data);
     return $data;
 }
-function getMovie($conn,$_POST_P): array
+function getMovie($conn,$basis,$order,$LIMIT,$OFFSET,$BackToRoot): array
 {
-    $movieTableName = "movies";
-    $data = [
-        'movies' => []
-    ];
-    $data['errorMessage'] = 'NoError';
-    //检查是否缺少参数
-    if(!(
-        isset($_POST_P['sort_by'])&&
-        isset($_POST_P['sort_order'])&&
-        isset($_POST_P['from'])&&
-        isset($_POST_P['to'])
-    ))
-        $data['errorMessage'] = 'LackParam';
+    $movieTableName = 'movies';
 
-    $basis = $_POST_P['sort_by'];
-    if ($basis != 'rating' && $basis != 'releaseTime')
-        $data['errorMessage'] = 'InvalidRange';
+    $movies = [];
 
-    $order = $_POST_P['sort_order'];
-    if ($order != 'increase' && $order != 'decrease')
-        $data['errorMessage'] = 'InvalidOrder';
-    else {
-        if($order === 'increase') $order = 'ASC';
-        if($order === 'decrease') $order = 'DESC';
-    }
-    $from = intval($_POST_P['from']);
-    $to = intval($_POST_P['to']);
-    $LIMIT = $to - $from + 1;
-    $OFFSET = $from - 1;
-    if ($LIMIT < 0)
-        $data['errorMessage'] = 'InvalidRange';
-    //请求参数合法性判断
-    if($OFFSET < 0)
-        $data['errorMessage'] = 'NoFound';
+    $SqlSearchMovie = "SELECT * FROM $movieTableName ORDER BY $basis $order LIMIT $LIMIT OFFSET $OFFSET;";
+    $result = $conn->query($SqlSearchMovie);
 
-    if($data['errorMessage'] === 'NoError'){
-        $SqlSearchMovie = "SELECT * FROM $movieTableName ORDER BY $basis $order LIMIT $LIMIT OFFSET $OFFSET;";
-        $result = $conn->query($SqlSearchMovie);
-
-        if ($result->num_rows == 0) {
-            $data['errorMessage'] = 'NoFound';
-        }else{
-            //$data['errorMessage'] = 'NoError';
-            $movies = [];
-            while ($row = $result->fetch_assoc()) {
-                //////////$rating是字符串！
-                $decade_rating = $row['rating'];
-                $rating = number_format((float)$decade_rating/ 10.0, 1);
-                //////////$rating是字符串！
-                $photos = [];
-                $directory = $row['photo_file_url'];
-                $files = scandir('../'.$directory);   //如果无??
-                foreach ($files as $file) {
-                    if ($file != "." && $file != "..") {
-                        $fileUrl = $directory . '/' . $file;
-                        $photos[] = $fileUrl;
-                    }
+    if ($result->num_rows != 0) {
+        while ($row = $result->fetch_assoc()) {
+            //////////$rating是字符串！
+            $decade_rating = $row['rating'];
+            $rating = number_format((float)$decade_rating/ 10.0, 1);
+            //////////$rating是字符串！
+            $photos = [];
+            $directory = $row['photo_file_url'];
+            if($BackToRoot)
+                $files = scandir('../'.$directory);
+            else
+                $files = scandir($directory);
+            foreach ($files as $file) {
+                if ($file != "." && $file != "..") {
+                    $fileUrl = $directory . '/' . $file;
+                    $photos[] = $fileUrl;
                 }
-                $movies[] = [
-                    'id' => $row['id'],
-                    'rating' => $rating,
-                    'movie_name' => $row['movie_name'],
-                    'attribution' => $row['attribution'],
-                    'movie_content' => $row['movie_content'],
-                    'cover_url' => $row['cover_url'],
-                    'releaseTime' => $row['releaseTime'],
-                    'comment_number'=>$row['comment_number'],
-                    'photos' => $photos
-                ];
             }
-            $data['movies'] = $movies;
+            $movies[] = [
+                'id' => $row['id'],
+                'rating' => $rating,
+                'movie_name' => $row['movie_name'],
+                'attribution' => $row['attribution'],
+                'movie_content' => $row['movie_content'],
+                'cover_url' => $row['cover_url'],
+                'releaseTime' => $row['releaseTime'],
+                'comment_number'=>$row['comment_number'],
+                'photos' => $photos
+            ];
         }
     }
-    return $data;
+    return $movies;
 }
+
+
+
+
+
+
+
 function getMovieById($conn,$query_id){
     $movieTableName = "movies";
     $SqlSearchMovie = "SELECT * FROM $movieTableName WHERE id = $query_id;";
@@ -305,8 +259,7 @@ function getMovieById($conn,$query_id){
     $row['photos']=$photos;
 
     return $row;
-};
-
+}
 
 
 /*
