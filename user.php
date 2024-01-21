@@ -39,13 +39,14 @@ function getStringBetween($str, $begin, $end)
 
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['query_id']) && is_numeric($_GET['query_id'])) {
+    if (isset($_GET['query_id']) && is_numeric($_GET['query_id']) && $_GET['query_id'] !='-1'){
         $conn = new mysqli($servername, $username, $password, $dbName);
         if ($conn->connect_error)
             $message = "数据库连接失败,请联系管理员,错误:" . $conn->connect_error;
 
 
         $query_id = intval($_GET['query_id']);
+
         $result = getDataById_GET($conn, $_GET)['userdata'];
 
         header('Content-Type: text/html');

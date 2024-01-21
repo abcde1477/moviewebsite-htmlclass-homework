@@ -15,3 +15,18 @@
 
 注:[TestUser,666666]是AutoRegister.php生成的管理员账户，register.php注册的账户不是管理员,可在管理页面将普通用户提权
 
+
+
+### 目录结构
+  * 非测试
+    * public目录下的php,是前端的javascript或者表单发送的交互接口,为可扩展性做了充足的准备
+    * private是后端写的函数文件,后端运行时会调用
+    * html是页面模板,后端根据html页面模板,通过修改部分数据再交付给用户
+    * movie_file存放电影封面以及剧照图片
+    * user_file存放用户头像
+  * 测试
+    * testData存放了测试数据
+    * getTest存放了查询表单页面
+
+    
+ 

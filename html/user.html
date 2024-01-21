@@ -84,19 +84,15 @@
         <!-- 这里是评论内容 -->
     </div>
     <script>
-        let user_id = document.getElementById('user_id').innerText;//在这里填入user_id;
-
+        let user_id = document.getElementById('user_id').innerText;
         let comments =[];
         async function getCommentData(sortBy){
             console.log('POST');
-            const postData =new FormData();
-            postData.append('idType','user');
-            postData.append('query_id',user_id);
-            postData.append('sort_by','comment_time');
-            postData.append('sort_order','decrease');
-            postData.append('from',1);
-            postData.append('to',998);
-            await fetch("public/getComments.php",{
+            const postData =new FormData();//设置请求表单信息
+            postData.append('idType','user');           postData.append('query_id',user_id);
+            postData.append('sort_by','comment_time');  postData.append('sort_order','decrease');
+            postData.append('from',1);                  postData.append('to',998);
+            await fetch("public/getComments.php",{//获取评论信息
                 method:'post',
                 body:postData
             })
@@ -105,11 +101,8 @@
                     comments =jsData['comments'];
                     document.getElementById('times').innerText = comments.length;
                 })
-                .catch();
-
             let PromiseList = [];
-            //评论列表格式转换
-            comments.forEach(comment=>{
+            comments.forEach(comment=>{ //异步加载用户头像，用户名信息
                 if(comment.id !== undefined) {
                     const userDataQuery = new FormData();
                     userDataQuery.append('query_id', comment.user_id)
@@ -129,9 +122,8 @@
                 }
             })
             await Promise.all(PromiseList);
-            updateCommentsDisplay();
+            updateCommentsDisplay();    //更新评论区
         }
-
         function updateCommentsDisplay() {
             // 清空评论容器
             const commentsContainer = document.getElementById('comments');
@@ -189,10 +181,6 @@
                 commentsContainer.appendChild(commentElement);
             });
         }
-        function deleteButton(){
-
-        }
-
         function enableEditMode() {
            var textarea = document.getElementById("profile-textarea");
            textarea.readOnly = false;
@@ -224,7 +212,6 @@
        }
        console.log('RUN');
        getCommentData('comment_time');
-       updateCommentsDisplay();
     </script>
     <script>
 

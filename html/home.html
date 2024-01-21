@@ -98,9 +98,6 @@
 </div>
 <script>
 
-
-
-
     async function getMovie(sortBy){
         const getAllMovie = new FormData();
         getAllMovie.append('sort_by',sortBy);
@@ -131,8 +128,7 @@
                     <a href="${detailURL}" class="image-container">
                         <img width="100" alt="${movieName}" src="${coverURL}" class="CoverImg">
                     </a>
-                </div>
-                <div class="info">
+                </div><div class="info">
                     <div class="hd">
                         <a href="${detailURL}" class="DetailURL">
                             <span class="title">${movieName}</span>
@@ -154,9 +150,6 @@
                         movieItemLi.append(movieItem)
                         movieList.appendChild(movieItemLi);
                     }
-                }
-                else{
-
                 }
             });
     }
